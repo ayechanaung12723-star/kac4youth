@@ -3,7 +3,7 @@ import Lottie from "lottie-react";
 
 export default function Hero() {
   return (
-    <section className="relative pt-32 pb-24 px-6 text-center max-w-5xl mx-auto">
+    <section className="relative pt-40 pb-24 px-6 text-center max-w-5xl mx-auto">
 
       {/* Heading */}
       <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
@@ -19,7 +19,7 @@ export default function Hero() {
       </p>
 
       {/* Buttons */}
-      <div className="flex flex-col md:flex-row gap-4 justify-center mb-12">
+      <div className="flex flex-col md:flex-row gap-4 justify-center mb-10">
         <button className="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-xl font-semibold transition">
           Start Learning
         </button>
@@ -28,8 +28,8 @@ export default function Hero() {
         </button>
       </div>
 
-      {/* Lottie Animation */}
-      <div className="w-40 md:w-56 mx-auto opacity-80">
+      {/* Lottie (FIXED SMALL SIZE) */}
+      <div className="w-24 md:w-32 mx-auto opacity-70">
         <Lottie
           animationData={require("../../public/hero-ai.json")}
           loop={true}
