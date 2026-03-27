@@ -8,7 +8,7 @@ import { courses } from "@/data/courses";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#020617] text-white pt-32">
+    <main className="min-h-screen bg-[#020617] text-white pt-36">
 
       <Navbar />
 

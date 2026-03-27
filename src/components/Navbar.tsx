@@ -26,16 +26,16 @@ export default function Navbar() {
       <div className="backdrop-blur bg-[#020617]/80 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex items-center justify-between">
 
-          {/* LOGO BIG */}
+          {/* LOGO HUGE */}
           <div className="flex items-center gap-4">
             <Image
               src="/images/logo.webp"
               alt="KAC Logo"
-              width={200}
-              height={200}
-              className="w-28 md:w-36 h-auto"
+              width={400}
+              height={400}
+              className="w-36 md:w-44 h-auto"
             />
-            <span className="font-extrabold text-2xl md:text-4xl">
+            <span className="font-extrabold text-3xl md:text-5xl">
               KAC For Youth
             </span>
           </div>
@@ -51,7 +51,7 @@ export default function Navbar() {
           </div>
 
           {/* CTA */}
-          <button className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded-xl font-semibold shadow-lg">
+          <button className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded-xl font-semibold shadow-lg text-lg">
             Start
           </button>
 

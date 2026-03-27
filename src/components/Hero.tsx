@@ -11,9 +11,9 @@ export default function Hero() {
         <Image
           src="/images/logo.webp"
           alt="KAC Logo"
-          width={400}       // Logo အရမ်းကြီး
-          height={400}      // Logo အရမ်းကြီး
-          className="w-48 md:w-80 mx-auto drop-shadow-[0_0_40px_rgba(59,130,246,0.7)]"
+          width={450}
+          height={450}
+          className="w-48 md:w-80 mx-auto drop-shadow-[0_0_45px_rgba(59,130,246,0.7)]"
         />
       </div>
 
