@@ -1,18 +1,12 @@
 "use client";
-interface Course {
-  title: string;
-  desc: string;
-  icon: string;
-  color?: string;
-}
-
-export default function CourseCard({ course }: { course: Course }) {
+export default function CourseCard({ course }: { course: any }) {
   return (
-    <div className={`p-8 bg-slate-900 rounded-3xl border border-slate-800 hover:border-blue-500 transition-all`}>
-      <div className="text-4xl mb-4">{course.icon}</div>
-      <h3 className="text-2xl font-bold mb-3">{course.title}</h3>
-      <p className="text-slate-400 mb-6">{course.desc}</p>
-      <button className="text-blue-400 font-bold">အသေးစိတ်ကြည့်မည် →</button>
+    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 hover:scale-105 transform transition-all duration-300 shadow-lg">
+      <h3 className="text-xl md:text-2xl font-bold mb-4">{course.title}</h3>
+      <p className="text-gray-300 mb-4">{course.description}</p>
+      <button className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg font-semibold">
+        Learn More
+      </button>
     </div>
   );
 }
