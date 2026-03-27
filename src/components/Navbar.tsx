@@ -1,61 +1,41 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
-import { FaFacebook, FaTelegram, FaYoutube } from "react-icons/fa";
+import Lottie from "lottie-react";
 
-export default function Navbar() {
+export default function Hero() {
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur bg-[#020617]/80 border-b border-white/10">
+    <section className="relative pt-40 pb-24 px-6 text-center max-w-5xl mx-auto">
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-3">
+      {/* Heading */}
+      <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+        Build Your Future with{" "}
+        <span className="bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+          AI & Crypto
+        </span>
+      </h1>
 
-        {/* Top Row (Social) */}
-        <div className="flex justify-end gap-4 text-lg mb-2 text-gray-300">
-          <a href="#" className="hover:text-blue-400 transition">
-            <FaFacebook />
-          </a>
-          <a href="#" className="hover:text-blue-400 transition">
-            <FaTelegram />
-          </a>
-          <a href="#" className="hover:text-red-500 transition">
-            <FaYoutube />
-          </a>
-        </div>
+      {/* Subtext */}
+      <p className="text-gray-400 max-w-2xl mx-auto mb-10">
+        လူငယ်တွေ အတွက် AI, Crypto နဲ့ Online Income Skills ကို လက်တွေ့အသုံးချနိုင်အောင် သင်ပေးမယ့် Platform
+      </p>
 
-        {/* Main Row */}
-        <div className="flex items-center justify-between">
-
-          {/* Logo + Name */}
-          <div className="flex items-center gap-4">
-            <Image
-              src="/images/logo.webp"
-              alt="KAC Logo"
-              width={80}
-              height={80}
-              className="w-14 md:w-20 h-auto"
-            />
-            <span className="font-extrabold text-xl md:text-2xl tracking-wide">
-              KAC For Youth
-            </span>
-          </div>
-
-          {/* Menu */}
-          <div className="hidden md:flex items-center gap-8 text-sm">
-            <Link href="#courses" className="hover:text-blue-400 transition">
-              Courses
-            </Link>
-            <Link href="#" className="hover:text-blue-400 transition">
-              AI Assistant
-            </Link>
-          </div>
-
-          {/* CTA */}
-          <button className="bg-blue-500 hover:bg-blue-600 transition px-5 py-2 rounded-xl text-sm font-semibold shadow-lg shadow-blue-500/20">
-            Start Now
-          </button>
-
-        </div>
+      {/* Buttons */}
+      <div className="flex flex-col md:flex-row gap-4 justify-center mb-10">
+        <button className="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-xl font-semibold transition">
+          Start Learning
+        </button>
+        <button className="border border-white/20 hover:border-white/40 px-6 py-3 rounded-xl transition">
+          Try AI Assistant
+        </button>
       </div>
-    </nav>
+
+      {/* Lottie (FIXED SMALL SIZE) */}
+      <div className="w-24 md:w-32 mx-auto opacity-70">
+        <Lottie
+          animationData={require("../../public/hero-ai.json")}
+          loop={true}
+        />
+      </div>
+
+    </section>
   );
 }
