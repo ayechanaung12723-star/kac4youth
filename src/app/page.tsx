@@ -4,16 +4,20 @@ import CourseCard from "@/components/CourseCard";
 import Stats from "@/components/Stats";
 import SocialLinks from "@/components/SocialLinks";
 import Footer from "@/components/Footer";
+import FloatingCTA from "@/components/FloatingCTA";
+import AISection from "@/components/AISection";
 import { courses } from "@/data/courses";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#020617] text-white">
-      
+
       <Navbar />
 
-      {/* Hero */}
       <Hero />
+
+      {/* AI Section */}
+      <AISection />
 
       {/* Courses */}
       <section id="courses" className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
@@ -28,14 +32,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats */}
       <Stats />
-
-      {/* Social */}
       <SocialLinks />
-
-      {/* Footer */}
       <Footer />
+
+      {/* Floating CTA */}
+      <FloatingCTA />
 
     </main>
   );
