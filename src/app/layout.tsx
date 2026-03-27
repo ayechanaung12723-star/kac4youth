@@ -2,7 +2,7 @@ import "../styles/globals.css";
 
 export const metadata = {
   title: "KAC For Youth",
-  description: "Build Your Future with AI, Crypto & Online Skills",
+  description: "AI, Crypto & Online Skills Platform",
 };
 
 export default function RootLayout({
