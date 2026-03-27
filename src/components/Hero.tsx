@@ -1,5 +1,6 @@
+"use client";
 import Lottie from "lottie-react";
-import heroAnim from "../public/hero-ai.json";
+import heroAnim from "../public/hero-ai.json"; 
 
 export default function Hero() {
   return (
