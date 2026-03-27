@@ -4,12 +4,13 @@ import CourseCard from "@/components/CourseCard";
 import Stats from "@/components/Stats";
 import SocialLinks from "@/components/SocialLinks";
 import Footer from "@/components/Footer";
+import FloatingCTA from "@/components/FloatingCTA";
 import { courses } from "@/data/courses";
+import CTA from "@/components/CTA";
 
 export default function Home() {
   return (
     <main className="min-h-screen text-white pt-36 scroll-smooth bg-[#020617]">
-
       <Navbar />
       <Hero />
 
@@ -18,16 +19,16 @@ export default function Home() {
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
           တက်ရောက်နိုင်သော သင်တန်းများ
         </h2>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {courses.map((course, i) => <CourseCard key={i} course={course} />)}
         </div>
       </section>
 
       <Stats />
+      <CTA />
       <SocialLinks />
       <Footer />
-
+      <FloatingCTA />
     </main>
   );
 }

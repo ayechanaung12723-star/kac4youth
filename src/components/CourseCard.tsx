@@ -1,4 +1,5 @@
 "use client";
+
 export default function CourseCard({ course }: { course: any }) {
   return (
     <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-2xl hover:bg-white/20">
