@@ -2,21 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+html {
+  scroll-behavior: smooth;
 }
+
+body {
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at top, rgba(34, 211, 238, 0.09), transparent 28%),
+    radial-gradient(circle at right, rgba(99, 102, 241, 0.09), transparent 25%),
+    #020617;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.25);
+  color: #fff;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes softPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.03);
+    opacity: 1;
+  }
+}
+
 .animate-float {
   animation: float 4s ease-in-out infinite;
 }
 
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0px); }
+.animate-fade-in-up {
+  animation: fadeInUp 0.9s ease forwards;
 }
-.animate-fadeIn {
-  animation: fadeIn 1s ease forwards;
+
+.animate-soft-pulse {
+  animation: softPulse 5s ease-in-out infinite;
 }
-.animate-fadeIn.delay-200 {
-  animation-delay: 0.2s;
+
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(22px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }

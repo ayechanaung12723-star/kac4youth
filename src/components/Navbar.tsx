@@ -1,39 +1,134 @@
 "use client";
-import Image from "next/image";
+
+import { useState } from "react";
 import Link from "next/link";
-import { FaFacebook, FaTelegram, FaYoutube } from "react-icons/fa";
+import { FaBars, FaTimes, FaTelegram, FaYoutube, FaFacebook } from "react-icons/fa";
+
+const links = [
+  { label: "Courses", href: "#courses" },
+  { label: "Stats", href: "#stats" },
+  { label: "Join", href: "https://t.me/lWJXmj8pC7o1YWY1", external: true },
+];
 
 export default function Navbar() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <nav className="fixed top-0 left-0 w-full z-50">
-      <div className="bg-black/80 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-2 flex justify-center gap-12 text-3xl md:text-4xl">
-          <a href="#" className="hover:text-blue-500 transition"> <FaFacebook /> </a>
-          <a href="#" className="hover:text-blue-400 transition"> <FaTelegram /> </a>
-          <a href="#" className="hover:text-red-500 transition"> <FaYoutube /> </a>
-        </div>
-      </div>
-      <div className="backdrop-blur bg-[#020617]/80 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Image
-              src="/images/logo.webp"
-              alt="KAC Logo"
-              width={400}
-              height={400}
-              className="w-36 md:w-44 h-auto"
-            />
-            <span className="font-extrabold text-3xl md:text-5xl">KAC For Youth</span>
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className="border-b border-white/10 bg-[#020617]/70 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10">
+          <Link href="/" className="group flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/8 text-sm font-black tracking-wide shadow-lg shadow-cyan-950/20">
+              KAC
+            </div>
+            <div className="leading-tight">
+              <p className="text-sm font-semibold text-white md:text-base">
+                KAC For Youth
+              </p>
+              <p className="text-xs text-slate-400">
+                Learn • Build • Grow
+              </p>
+            </div>
+          </Link>
+
+          <nav className="hidden items-center gap-8 md:flex">
+            {links.map((item) =>
+              item.external ? (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm font-medium text-slate-300 transition hover:text-white"
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="text-sm font-medium text-slate-300 transition hover:text-white"
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
+          </nav>
+
+          <div className="hidden items-center gap-3 md:flex">
+            <a
+              href="https://www.facebook.com/KACforYouth"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full border border-white/10 bg-white/5 p-3 text-slate-300 transition hover:text-blue-400"
+            >
+              <FaFacebook />
+            </a>
+            <a
+              href="https://t.me/lWJXmj8pC7o1YWY1"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full border border-white/10 bg-white/5 p-3 text-slate-300 transition hover:text-cyan-300"
+            >
+              <FaTelegram />
+            </a>
+            <a
+              href="https://www.youtube.com/@KACForYouth"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full border border-white/10 bg-white/5 p-3 text-slate-300 transition hover:text-red-400"
+            >
+              <FaYoutube />
+            </a>
+
+            <Link
+              href="https://t.me/lWJXmj8pC7o1YWY1"
+              target="_blank"
+              className="inline-flex items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:scale-[1.02] hover:bg-cyan-100"
+            >
+              Start Now
+            </Link>
           </div>
-          <div className="hidden md:flex gap-8 text-base md:text-lg">
-            <Link href="#courses" className="hover:text-blue-400 hover:underline transition-all duration-200">Courses</Link>
-            <Link href="#" className="hover:text-blue-400 hover:underline transition-all duration-200">AI Assistant</Link>
-          </div>
-          <button className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded-xl font-semibold shadow-lg text-lg transition-transform transform hover:-translate-y-1">
-            Start
+
+          <button
+            onClick={() => setOpen((v) => !v)}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white md:hidden"
+            aria-label="Toggle menu"
+          >
+            {open ? <FaTimes /> : <FaBars />}
           </button>
         </div>
+
+        {open && (
+          <div className="border-t border-white/10 bg-[#020617]/95 px-6 py-5 md:hidden">
+            <div className="mx-auto flex max-w-7xl flex-col gap-4">
+              {links.map((item) =>
+                item.external ? (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => setOpen(false)}
+                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-slate-200"
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-slate-200"
+                  >
+                    {item.label}
+                  </Link>
+                )
+              )}
+            </div>
+          </div>
+        )}
       </div>
-    </nav>
+    </header>
   );
 }

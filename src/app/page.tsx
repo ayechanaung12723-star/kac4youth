@@ -5,22 +5,37 @@ import Stats from "@/components/Stats";
 import SocialLinks from "@/components/SocialLinks";
 import Footer from "@/components/Footer";
 import FloatingCTA from "@/components/FloatingCTA";
-import { courses } from "@/data/courses";
 import CTA from "@/components/CTA";
+import { courses } from "@/data/courses";
 
 export default function Home() {
   return (
-    <main className="min-h-screen text-white pt-36 scroll-smooth bg-[#020617]">
+    <main className="relative min-h-screen overflow-x-hidden bg-[#020617] text-white">
       <Navbar />
+
       <Hero />
 
-      {/* Courses */}
-      <section id="courses" className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
-          တက်ရောက်နိုင်သော သင်တန်းများ
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {courses.map((course, i) => <CourseCard key={i} course={course} />)}
+      <section
+        id="courses"
+        className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28"
+      >
+        <div className="mx-auto mb-14 max-w-2xl text-center">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.35em] text-cyan-300/80">
+            Courses
+          </p>
+          <h2 className="text-3xl font-bold tracking-tight md:text-5xl">
+            တက်ရောက်နိုင်သော သင်တန်းများ
+          </h2>
+          <p className="mt-4 text-base leading-7 text-slate-300 md:text-lg">
+            လေ့လာရန်လွယ်ကူပြီး လက်တွေ့အသုံးချနိုင်တဲ့ skill-based courses တွေကို
+            တစ်နေရာတည်းမှာ စနစ်တကျ စုစည်းထားပါတယ်။
+          </p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {courses.map((course, i) => (
+            <CourseCard key={course.title + i} course={course} />
+          ))}
         </div>
       </section>
 
