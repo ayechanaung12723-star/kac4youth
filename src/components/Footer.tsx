@@ -1,6 +1,8 @@
+"use client";
+
 export default function Footer() {
   return (
-    <footer className="text-center py-6 border-t border-slate-800 text-slate-500">
+    <footer className="py-6 text-center text-slate-500 border-t border-slate-700 mt-20">
       © 2026 KAC For Youth. All rights reserved.
     </footer>
   );

@@ -1,16 +1,6 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import "../styles/globals.css";
 
-export const metadata: Metadata = {
-  title: "KAC For Youth",
-  description: "AI, Crypto and Technology Learning Platform",
-};
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>{children}</body>
