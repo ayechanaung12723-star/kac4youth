@@ -8,10 +8,9 @@ import { courses } from "@/data/courses";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#020617] text-white pt-36 scroll-smooth">
+    <main className="min-h-screen text-white pt-36 scroll-smooth bg-[#020617]">
 
       <Navbar />
-
       <Hero />
 
       {/* Courses */}
@@ -21,9 +20,7 @@ export default function Home() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {courses.map((course, i) => (
-            <CourseCard key={i} course={course} />
-          ))}
+          {courses.map((course, i) => <CourseCard key={i} course={course} />)}
         </div>
       </section>
 
