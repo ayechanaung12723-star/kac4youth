@@ -10,19 +10,12 @@ import CourseCard from "../components/CourseCard";
 export default function Home() {
   return (
     <main className="bg-[#020617] text-white">
-
       <Navbar />
-
       <Hero />
-
       <Stats />
 
-      {/* Courses */}
       <section className="py-20 max-w-7xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-16">
-          Courses
-        </h2>
-
+        <h2 className="text-3xl font-bold text-center mb-16">Courses</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {courses.map((c, i) => (
             <CourseCard key={i} course={c} />
@@ -31,11 +24,8 @@ export default function Home() {
       </section>
 
       <CTA />
-
       <SocialLinks />
-
       <Footer />
-
     </main>
   );
 }
