@@ -1,9 +1,9 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import SocialLinks from "@/components/SocialLinks";
-import Footer from "@/components/Footer";
-import { courses } from "@/data/courses";
-import CourseCard from "@/components/CourseCard";
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
+import SocialLinks from "../components/SocialLinks";
+import Footer from "../components/Footer";
+import { courses } from "../data/courses";
+import CourseCard from "../components/CourseCard";
 
 export default function Home() {
   return (
