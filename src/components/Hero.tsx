@@ -9,7 +9,7 @@ export default function Hero() {
         KAC For Youth
       </h1>
 
-      <div className="w-64 mx-auto">
+      <div className="w-32 md:w-48 mx-auto opacity-70">
         <Lottie
           animationData={require("../../public/hero-ai.json")}
           loop={true}

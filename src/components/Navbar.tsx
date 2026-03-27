@@ -8,8 +8,10 @@ export default function Navbar() {
       <Image
         src="/images/logo.webp"
         alt="KAC Logo"
-        width={120}
-        height={50}
+        width={0}
+        height={0}
+        sizes="100vw"
+        className="h-12 w-auto"
       />
 
       <span className="ml-3 font-bold text-xl">
@@ -19,3 +21,4 @@ export default function Navbar() {
     </nav>
   );
 }
+
