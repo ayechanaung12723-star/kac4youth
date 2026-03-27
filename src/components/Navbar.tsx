@@ -9,7 +9,7 @@ export default function Navbar() {
 
       {/* SOCIAL BAR */}
       <div className="bg-black/80 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-2 flex justify-center gap-10 text-2xl md:text-3xl">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-2 flex justify-center gap-12 text-3xl md:text-4xl">
           <a href="#" className="hover:text-blue-500 transition">
             <FaFacebook />
           </a>
@@ -24,24 +24,24 @@ export default function Navbar() {
 
       {/* MAIN NAV */}
       <div className="backdrop-blur bg-[#020617]/80 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex items-center justify-between">
 
           {/* LOGO BIG */}
           <div className="flex items-center gap-4">
             <Image
               src="/images/logo.webp"
               alt="KAC Logo"
-              width={160}
-              height={160}
-              className="w-24 md:w-32 h-auto"
+              width={200}
+              height={200}
+              className="w-28 md:w-36 h-auto"
             />
-            <span className="font-extrabold text-2xl md:text-3xl">
+            <span className="font-extrabold text-2xl md:text-4xl">
               KAC For Youth
             </span>
           </div>
 
           {/* MENU */}
-          <div className="hidden md:flex gap-8 text-base">
+          <div className="hidden md:flex gap-8 text-base md:text-lg">
             <Link href="#courses" className="hover:text-blue-400 transition">
               Courses
             </Link>
@@ -51,7 +51,7 @@ export default function Navbar() {
           </div>
 
           {/* CTA */}
-          <button className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded-xl font-semibold">
+          <button className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded-xl font-semibold shadow-lg">
             Start
           </button>
 
