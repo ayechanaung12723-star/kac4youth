@@ -18,9 +18,9 @@ export default function CourseModal({ course, isSelected }: any) {
           <Image 
             src={course.icon} 
             alt={course.title} 
-            width={150} 
-            height={150} 
-            className="w-30 h-30 md:w-40 md:h-40 object-contain animate-float"
+            width={250} 
+            height={250} 
+            className="w-40 h-40 md:w-50 md:h-50 object-contain animate-float"
           />
         </div>
         <h3 className="text-3xl md:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
