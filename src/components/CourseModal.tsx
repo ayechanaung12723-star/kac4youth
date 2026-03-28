@@ -3,16 +3,16 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
-interface CourseModalProps {
+type CourseModalProps = {
   course: {
     title: string;
     icon: string;
     description: string;
     topics: string[];
-  };
+  } | null;
   isOpen: boolean;
   onClose: () => void;
-}
+};
 
 export default function CourseModal({ course, isOpen, onClose }: CourseModalProps) {
   if (!course) return null;
@@ -44,26 +44,23 @@ export default function CourseModal({ course, isOpen, onClose }: CourseModalProp
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-[#0f172a] p-6 text-left align-middle shadow-xl transition-all">
-                {/* Title */}
                 <Dialog.Title as="h3" className="text-2xl font-bold mb-4">
                   {course.title}
                 </Dialog.Title>
 
-                {/* Description */}
-                <p className="text-slate-300 mb-4">{course.description}</p>
+                <p className="text-slate-400 mb-4">{course.description}</p>
 
-                {/* Topics */}
-                <ul className="list-disc list-inside text-slate-200 space-y-2 mb-6">
-                  {course.topics.map((topic, idx) => (
-                    <li key={idx}>{topic}</li>
+                <ul className="list-disc list-inside space-y-1 text-slate-300 mb-6">
+                  {course.topics.map((topic, i) => (
+                    <li key={i}>{topic}</li>
                   ))}
                 </ul>
 
-                {/* Close Button */}
-                <div className="flex justify-end">
+                <div className="mt-4 text-right">
                   <button
+                    type="button"
+                    className="btn-primary"
                     onClick={onClose}
-                    className="btn-primary px-6 py-2"
                   >
                     Close
                   </button>
