@@ -13,14 +13,14 @@ export default function CourseModal({ course, isSelected }: any) {
       }`}
     >
       {/* Course Header Info */}
-      <div className="flex flex-col items-center text-center gap-4">
-        <div className="p-6 rounded-[30px] bg-gradient-to-b from-blue-500/20 to-transparent border border-blue-500/20 shadow-inner">
+      <div className="flex flex-col items-center text-center gap-6">
+        <div className="p-8 rounded-[40px] bg-gradient-to-b from-blue-500/20 to-transparent border border-blue-500/20 shadow-inner">
           <Image 
             src={course.icon} 
             alt={course.title} 
-            width={100} 
-            height={100} 
-            className="w-20 h-20 md:w-24 md:h-24 object-contain animate-float"
+            width={150} 
+            height={150} 
+            className="w-30 h-30 md:w-40 md:h-40 object-contain animate-float"
           />
         </div>
         <h3 className="text-3xl md:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
