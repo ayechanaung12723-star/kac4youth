@@ -21,13 +21,14 @@ export default function Home() {
         <div className="grid lg:grid-cols-2 gap-10">
 
           {/* LEFT SIDE */}
-          <div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-8">
+          <div className="flex flex-col gap-6">
+
+            <h2 className="text-3xl md:text-5xl font-bold">
               တက်ရောက်နိုင်သော သင်တန်းများ
             </h2>
 
             {/* Course Tabs */}
-            <div className="flex flex-wrap gap-3 mb-6">
+            <div className="flex flex-wrap gap-3">
               {courses.map((course, i) => (
                 <button
                   key={i}
@@ -46,41 +47,32 @@ export default function Home() {
             {/* Selected Course Box */}
             <div className="bg-[#0f172a] p-6 rounded-2xl">
 
-              {/* Header: small icon + title */}
-              <div className="flex items-center gap-4 mb-4">
-                <img
-                  src={selectedCourse.icon}
-                  className="w-12 h-12"
-                />
-                <h3 className="text-2xl font-bold">
-                  {selectedCourse.title}
-                </h3>
+              {/* Header */}
+              <div className="flex items-center gap-3 mb-4">
+                <img src={selectedCourse.icon} className="w-10 h-10" />
+                <h3 className="text-2xl font-bold">{selectedCourse.title}</h3>
               </div>
 
               {/* Description */}
-              <p className="text-slate-400 mb-4">
-                {selectedCourse.description}
-              </p>
+              <p className="text-slate-400 mb-4">{selectedCourse.description}</p>
 
-              {/* Topics (scrollable) */}
-              <div className="max-h-60 overflow-y-auto pr-2">
-                <ul className="space-y-2 text-sm text-slate-300">
-                  {selectedCourse.topics.map((t: string, i: number) => (
-                    <li
-                      key={i}
-                      className="border-b border-slate-700 pb-2 hover:text-white transition"
-                    >
-                      • {t}
-                    </li>
-                  ))}
-                </ul>
+              {/* Topics (2-column grid, no scroll) */}
+              <div className="grid grid-cols-2 gap-2">
+                {selectedCourse.topics.map((t: string, i: number) => (
+                  <div
+                    key={i}
+                    className="text-sm text-slate-300 border-b border-slate-700 pb-1 hover:text-white transition"
+                  >
+                    • {t}
+                  </div>
+                ))}
               </div>
 
             </div>
           </div>
 
           {/* RIGHT SIDE */}
-          <div className="lg:sticky lg:top-24 h-fit">
+          <div className="lg:sticky lg:top-24 h-fit flex flex-col gap-6">
             <div className="bg-[#0f172a] p-6 rounded-2xl">
 
               {/* Stats */}
@@ -88,14 +80,10 @@ export default function Home() {
 
               {/* CTA */}
               <div className="mt-6 text-center">
-                <h3 className="text-xl font-bold mb-4">
-                  Ready to Start?
-                </h3>
-
+                <h3 className="text-xl font-bold mb-2">Ready to Start?</h3>
                 <p className="text-slate-400 mb-4">
                   Join Telegram and begin your journey
                 </p>
-
                 <a
                   href="https://t.me/YOUR_LINK"
                   target="_blank"
