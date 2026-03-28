@@ -31,7 +31,7 @@ export default function Hero() {
         </div>
 
         {/* Floating Lottie icon with subtle fade in */}
-        <div className="w-16 md:w-20 opacity-90 absolute -right-4 md:-right-8 top-10 md:top-20 animate-in fade-in duration-1000">
+        <div className="w-22 md:w-30 opacity-90 absolute -right-4 md:-right-8 top-10 md:top-20 animate-in fade-in duration-1000">
           <Lottie animationData={anim} loop />
         </div>
       </div>
@@ -43,19 +43,10 @@ export default function Hero() {
       </h1>
 
       <p className="mt-6 md:mt-8 text-base md:text-xl max-w-2xl mx-auto text-slate-300 font-medium leading-relaxed">
-        AI, Crypto, Telegram, Freelancing skills ကို လက်တွေ့အသုံးချနိုင်အောင်
+        Computer, Telegram, AI, Crypto, Freelancing skills ကို လက်တွေ့အသုံးချနိုင်အောင်
         သင်ပေးမယ့် platform
       </p>
 
-      <div className="mt-10 md:mt-12 flex gap-4 justify-center flex-wrap">
-        {/* Buttons with hover lift and shadow effects */}
-        <button className="btn-primary transform hover:-translate-y-0.5 shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_25px_rgba(255,255,255,0.2)]">
-          Start Learning
-        </button>
-        <button className="btn-secondary transform hover:-translate-y-0.5 hover:bg-white/5 hover:shadow-[0_0_15px_rgba(59,130,246,0.1)]">
-          Join Telegram
-        </button>
-      </div>
     </section>
   );
 }
