@@ -47,10 +47,16 @@ export default function Home() {
             {/* Selected Course Box */}
             <div className="bg-[#0f172a] p-4 md:p-6 rounded-2xl">
 
-              {/* Header */}
+              {/* Header: small image only */}
               <div className="flex items-center gap-3 mb-3">
-                <img src={selectedCourse.icon} className="w-10 h-10" />
-                <h3 className="text-xl md:text-2xl font-bold">{selectedCourse.title}</h3>
+                <img
+                  src={selectedCourse.icon}
+                  className="w-10 h-10 object-contain"
+                  alt={selectedCourse.title}
+                />
+                <h3 className="text-xl md:text-2xl font-bold">
+                  {selectedCourse.title}
+                </h3>
               </div>
 
               {/* Description */}
@@ -58,7 +64,7 @@ export default function Home() {
                 {selectedCourse.description}
               </p>
 
-              {/* Topics (2-column, max visible items = 6) */}
+              {/* Topics (2-column grid, max 6 items) */}
               <div className="grid grid-cols-2 gap-2">
                 {selectedCourse.topics.slice(0, 6).map((t: string, i: number) => (
                   <div
@@ -70,10 +76,9 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Optional “See More” button */}
               {selectedCourse.topics.length > 6 && (
                 <button
-                  onClick={() => alert("See full topics in modal")}
+                  onClick={() => alert("See full topics")}
                   className="mt-2 text-blue-400 text-xs hover:underline"
                 >
                   See More
@@ -87,10 +92,8 @@ export default function Home() {
           <div className="lg:sticky lg:top-24 h-fit flex flex-col gap-6">
             <div className="bg-[#0f172a] p-6 rounded-2xl">
 
-              {/* Stats */}
               <Stats />
 
-              {/* CTA */}
               <div className="mt-6 text-center">
                 <h3 className="text-xl font-bold mb-2">Ready to Start?</h3>
                 <p className="text-slate-400 mb-4">
