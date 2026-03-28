@@ -1,9 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --primary-glow: conic-gradient(
+@theme {
+  --color-primary-glow: conic-gradient(
     from 180deg at 50% 50%,
     #16abff33 0deg,
     #0885ff33 55deg,
@@ -62,13 +60,27 @@ p {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Buttons Updates */
+/* Buttons Updates using Standard CSS or Tailwind utilities */
 .btn-primary {
-  @apply bg-white text-black rounded-full px-8 py-4 font-bold transition-all duration-300 hover:bg-blue-50 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] active:scale-95 flex items-center justify-center;
+  @apply bg-white text-black rounded-full px-8 py-4 font-bold transition-all duration-300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-primary:hover {
+  background-color: #f8fafc;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
 .btn-secondary {
-  @apply border border-white/20 rounded-full px-8 py-4 transition-all duration-300 hover:bg-white/5 hover:border-white/40 active:scale-95 flex items-center justify-center;
+  @apply border border-white/20 rounded-full px-8 py-4 transition-all duration-300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 /* Animations */
