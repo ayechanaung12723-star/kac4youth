@@ -1,4 +1,4 @@
-"use client"; // Client Component
+"use client";
 
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
@@ -9,8 +9,8 @@ import SocialLinks from "@/components/SocialLinks";
 import Footer from "@/components/Footer";
 import FloatingCTA from "@/components/FloatingCTA";
 import CTA from "@/components/CTA";
-import CourseModal from "@/components/CourseModal";
 import { courses } from "@/data/courses";
+import CourseModal from "@/components/CourseModal";
 
 export default function Home() {
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
@@ -20,6 +20,7 @@ export default function Home() {
       <Navbar />
       <Hero />
 
+      {/* Courses Section */}
       <section
         id="courses"
         className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28"
@@ -39,24 +40,29 @@ export default function Home() {
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {courses.map((course, i) => (
-            <div key={i} onClick={() => setSelectedCourse(course)}>
-              <CourseCard course={course} />
-            </div>
+            <CourseCard
+              key={i}
+              course={course}
+              onClick={() => setSelectedCourse(course)}
+            />
           ))}
         </div>
       </section>
+
+      {/* Course Modal */}
+      {selectedCourse && (
+        <CourseModal
+          course={selectedCourse}
+          isOpen={!!selectedCourse}
+          onClose={() => setSelectedCourse(null)}
+        />
+      )}
 
       <Stats />
       <CTA />
       <SocialLinks />
       <Footer />
       <FloatingCTA />
-
-      <CourseModal
-        course={selectedCourse}
-        isOpen={!!selectedCourse}
-        onClose={() => setSelectedCourse(null)}
-      />
     </main>
   );
 }
