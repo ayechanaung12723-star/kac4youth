@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --primary-glow: conic-gradient(
+    from 180deg at 50% 50%,
+    #16abff33 0deg,
+    #0885ff33 55deg,
+    #54d6ff33 120deg,
+    #0071ff33 160deg,
+    transparent 360deg
+  );
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -9,51 +20,64 @@ html {
 body {
   background: #020617;
   color: white;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
 }
 
 /* Typography */
-h1, h2, h3 {
-  letter-spacing: -0.02em;
+h1, h2, h3, h4 {
+  letter-spacing: -0.03em;
+  line-height: 1.2;
 }
 
 p {
-  color: #cbd5f5;
+  color: #94a3b8;
+  line-height: 1.6;
 }
 
-/* Buttons */
-.btn-primary {
-  background: white;
-  color: black;
-  border-radius: 999px;
-  padding: 12px 28px;
-  font-weight: 600;
-}
-.btn-primary:hover {
-  background: #e2e8f0;
-}
-
-.btn-secondary {
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 999px;
-  padding: 12px 28px;
-}
-.btn-secondary:hover {
-  border-color: white;
-}
-
-/* Scrollable topics */
+/* Custom Scrollbar for Course Panel */
 .overflow-y-auto {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.3) transparent;
+  scrollbar-color: rgba(59, 130, 246, 0.2) transparent;
 }
+
 .overflow-y-auto::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
+
 .overflow-y-auto::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background-color: rgba(255,255,255,0.3);
-  border-radius: 3px;
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 20px;
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Buttons Updates */
+.btn-primary {
+  @apply bg-white text-black rounded-full px-8 py-4 font-bold transition-all duration-300 hover:bg-blue-50 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] active:scale-95 flex items-center justify-center;
+}
+
+.btn-secondary {
+  @apply border border-white/20 rounded-full px-8 py-4 transition-all duration-300 hover:bg-white/5 hover:border-white/40 active:scale-95 flex items-center justify-center;
+}
+
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
 }
