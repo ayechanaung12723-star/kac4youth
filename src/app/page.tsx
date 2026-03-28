@@ -1,4 +1,4 @@
-"use client";
+"use client"; // အရင်ဆုံး client directive
 
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
@@ -9,11 +9,22 @@ import SocialLinks from "@/components/SocialLinks";
 import Footer from "@/components/Footer";
 import FloatingCTA from "@/components/FloatingCTA";
 import CTA from "@/components/CTA";
+import CourseModal from "@/components/CourseModal"; // modal import
 import { courses } from "@/data/courses";
-import CourseModal from "@/components/CourseModal";
 
 export default function Home() {
-  const [selectedCourse, setSelectedCourse] = useState<any>(null);
+  const [selectedCourse, setSelectedCourse] = useState<any>(null); // selected course
+  const [isModalOpen, setIsModalOpen] = useState(false); // modal open state
+
+  const openModal = (course: any) => {
+    setSelectedCourse(course);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedCourse(null);
+    setIsModalOpen(false);
+  };
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#020617] text-white">
@@ -42,19 +53,18 @@ export default function Home() {
             <CourseCard
               key={i}
               course={course}
-              onClick={() => setSelectedCourse(course)}
+              onClick={() => openModal(course)} // click → modal open
             />
           ))}
         </div>
       </section>
 
-      {selectedCourse && (
-        <CourseModal
-          course={selectedCourse}
-          isOpen={!!selectedCourse}
-          onClose={() => setSelectedCourse(null)}
-        />
-      )}
+      {/* modal */}
+      <CourseModal
+        course={selectedCourse}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+      />
 
       <Stats />
       <CTA />
