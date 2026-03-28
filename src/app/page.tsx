@@ -10,7 +10,7 @@ import FloatingCTA from "@/components/FloatingCTA";
 import { courses } from "@/data/courses";
 
 export default function Home() {
-  const [selectedCourse, setSelectedCourse] = useState<any>(courses[0]);
+  const [selectedCourse, setSelectedCourse] = useState(courses[0]);
 
   return (
     <main className="relative min-h-screen bg-[#020617] text-white">
@@ -43,26 +43,39 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Selected Course */}
+            {/* Selected Course Box */}
             <div className="bg-[#0f172a] p-6 rounded-2xl">
-              <img
-                src={selectedCourse.icon}
-                className="w-20 mb-4"
-              />
 
-              <h3 className="text-2xl font-bold mb-2">
-                {selectedCourse.title}
-              </h3>
+              {/* Header: small icon + title */}
+              <div className="flex items-center gap-4 mb-4">
+                <img
+                  src={selectedCourse.icon}
+                  className="w-12 h-12"
+                />
+                <h3 className="text-2xl font-bold">
+                  {selectedCourse.title}
+                </h3>
+              </div>
 
+              {/* Description */}
               <p className="text-slate-400 mb-4">
                 {selectedCourse.description}
               </p>
 
-              <ul className="space-y-2 text-sm text-slate-300">
-                {selectedCourse.topics.map((t: string, i: number) => (
-                  <li key={i}>• {t}</li>
-                ))}
-              </ul>
+              {/* Topics (scrollable) */}
+              <div className="max-h-60 overflow-y-auto pr-2">
+                <ul className="space-y-2 text-sm text-slate-300">
+                  {selectedCourse.topics.map((t: string, i: number) => (
+                    <li
+                      key={i}
+                      className="border-b border-slate-700 pb-2 hover:text-white transition"
+                    >
+                      • {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
             </div>
           </div>
 
@@ -70,8 +83,10 @@ export default function Home() {
           <div className="lg:sticky lg:top-24 h-fit">
             <div className="bg-[#0f172a] p-6 rounded-2xl">
 
+              {/* Stats */}
               <Stats />
 
+              {/* CTA */}
               <div className="mt-6 text-center">
                 <h3 className="text-xl font-bold mb-4">
                   Ready to Start?
