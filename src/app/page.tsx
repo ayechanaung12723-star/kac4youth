@@ -26,7 +26,7 @@ export default function Home() {
       {/* Courses Section */}
       <section className="mx-auto max-w-7xl px-6 py-20">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-500">
+          <h2 className="text-2xl md:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-500">
             တက်ရောက်နိုင်သော သင်တန်းများ
           </h2>
           <p className="text-slate-400 mt-4">သင်တန်းအသေးစိတ်ကို သိရှိရန် သင်တန်းတစ်ခုခုကို နှိပ်ပါ</p>
