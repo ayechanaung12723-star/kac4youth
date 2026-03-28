@@ -1,22 +1,20 @@
-"use client";
-
 import Image from "next/image";
 
-interface CourseCardProps {
+type CourseCardProps = {
   course: {
     title: string;
     icon: string;
     description: string;
     topics: string[];
   };
-  onClick: (course: any) => void;
-}
+  onClick?: () => void; // onClick prop ထည့်
+};
 
 export default function CourseCard({ course, onClick }: CourseCardProps) {
   return (
     <div
       className="bg-[#0f172a] p-6 rounded-2xl soft-shadow hover-up cursor-pointer"
-      onClick={() => onClick(course)}
+      onClick={onClick} // click handler
     >
       {/* ICON */}
       <div className="mb-4">
@@ -35,12 +33,11 @@ export default function CourseCard({ course, onClick }: CourseCardProps) {
       {/* DESCRIPTION */}
       <p className="text-slate-400 mb-4">{course.description}</p>
 
-      {/* TOPICS PREVIEW (first 3 only) */}
+      {/* TOPICS */}
       <ul className="text-sm text-slate-300 mb-6 space-y-1">
-        {course.topics.slice(0, 3).map((t, i) => (
+        {course.topics.map((t, i) => (
           <li key={i}>✔ {t}</li>
         ))}
-        {course.topics.length > 3 && <li>...more</li>}
       </ul>
 
       {/* BUTTON */}
