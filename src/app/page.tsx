@@ -1,14 +1,29 @@
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import CourseCard from "@/components/CourseCard";
+import CourseModal from "@/components/CourseModal";
 import Stats from "@/components/Stats";
 import SocialLinks from "@/components/SocialLinks";
 import Footer from "@/components/Footer";
 import FloatingCTA from "@/components/FloatingCTA";
 import CTA from "@/components/CTA";
-import { courses } from "@/data/courses";
+import { courses } from "@/data/course";
 
 export default function Home() {
+  const [selectedCourse, setSelectedCourse] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (course: any) => {
+    setSelectedCourse(course);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCourse(null);
+  };
+
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#020617] text-white">
       <Navbar />
@@ -27,17 +42,20 @@ export default function Home() {
             တက်ရောက်နိုင်သော သင်တန်းများ
           </h2>
           <p className="mt-4 text-base leading-7 text-slate-300 md:text-lg">
-            လေ့လာရန်လွယ်ကူပြီး လက်တွေ့အသုံးချနိုင်တဲ့ skill-based courses တွေကို
-            တစ်နေရာတည်းမှာ စနစ်တကျ စုစည်းထားပါတယ်။
+            လေ့လာရန်လွယ်ကူပြီး လက်တွေ့အသုံးချနိုင်တဲ့ skill-based courses
+            တွေကို တစ်နေရာတည်းမှာ စနစ်တကျ စုစည်းထားပါတယ်။
           </p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {courses.map((course, i) => (
-            <CourseCard key={course.title + i} course={course} />
+            <CourseCard key={course.title + i} course={course} onClick={openModal} />
           ))}
         </div>
       </section>
+
+      {/* Modal */}
+      <CourseModal course={selectedCourse} isOpen={isModalOpen} onClose={closeModal} />
 
       <Stats />
       <CTA />
