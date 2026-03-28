@@ -45,28 +45,40 @@ export default function Home() {
             </div>
 
             {/* Selected Course Box */}
-            <div className="bg-[#0f172a] p-6 rounded-2xl">
+            <div className="bg-[#0f172a] p-4 md:p-6 rounded-2xl">
 
               {/* Header */}
-              <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center gap-3 mb-3">
                 <img src={selectedCourse.icon} className="w-10 h-10" />
-                <h3 className="text-2xl font-bold">{selectedCourse.title}</h3>
+                <h3 className="text-xl md:text-2xl font-bold">{selectedCourse.title}</h3>
               </div>
 
               {/* Description */}
-              <p className="text-slate-400 mb-4">{selectedCourse.description}</p>
+              <p className="text-slate-400 mb-3 text-sm md:text-base">
+                {selectedCourse.description}
+              </p>
 
-              {/* Topics (2-column grid, no scroll) */}
+              {/* Topics (2-column, max visible items = 6) */}
               <div className="grid grid-cols-2 gap-2">
-                {selectedCourse.topics.map((t: string, i: number) => (
+                {selectedCourse.topics.slice(0, 6).map((t: string, i: number) => (
                   <div
                     key={i}
-                    className="text-sm text-slate-300 border-b border-slate-700 pb-1 hover:text-white transition"
+                    className="text-xs md:text-sm text-slate-300 border-b border-slate-700 pb-1 hover:text-white transition"
                   >
                     • {t}
                   </div>
                 ))}
               </div>
+
+              {/* Optional “See More” button */}
+              {selectedCourse.topics.length > 6 && (
+                <button
+                  onClick={() => alert("See full topics in modal")}
+                  className="mt-2 text-blue-400 text-xs hover:underline"
+                >
+                  See More
+                </button>
+              )}
 
             </div>
           </div>
