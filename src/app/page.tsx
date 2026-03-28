@@ -20,7 +20,6 @@ export default function Home() {
       <Navbar />
       <Hero />
 
-      {/* Courses Section */}
       <section
         id="courses"
         className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28"
@@ -49,7 +48,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Course Modal */}
       {selectedCourse && (
         <CourseModal
           course={selectedCourse}

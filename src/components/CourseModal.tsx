@@ -3,7 +3,18 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
-export default function CourseModal({ course, isOpen, onClose }: any) {
+interface CourseModalProps {
+  course: {
+    title: string;
+    icon: string;
+    description: string;
+    topics: string[];
+  };
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function CourseModal({ course, isOpen, onClose }: CourseModalProps) {
   if (!course) return null;
 
   return (
@@ -32,24 +43,27 @@ export default function CourseModal({ course, isOpen, onClose }: any) {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-[#0f172a] p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title
-                  as="h3"
-                  className="text-2xl font-bold mb-4"
-                >
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-[#0f172a] p-6 text-left align-middle shadow-xl transition-all">
+                {/* Title */}
+                <Dialog.Title as="h3" className="text-2xl font-bold mb-4">
                   {course.title}
                 </Dialog.Title>
 
-                <ul className="list-disc list-inside space-y-2 text-slate-300">
-                  {course.topicsDetailed?.map((topic: string, i: number) => (
-                    <li key={i}>{topic}</li>
+                {/* Description */}
+                <p className="text-slate-300 mb-4">{course.description}</p>
+
+                {/* Topics */}
+                <ul className="list-disc list-inside text-slate-200 space-y-2 mb-6">
+                  {course.topics.map((topic, idx) => (
+                    <li key={idx}>{topic}</li>
                   ))}
                 </ul>
 
-                <div className="mt-6 text-right">
+                {/* Close Button */}
+                <div className="flex justify-end">
                   <button
-                    className="btn-primary"
                     onClick={onClose}
+                    className="btn-primary px-6 py-2"
                   >
                     Close
                   </button>
