@@ -15,13 +15,13 @@ export default function Hero() {
 
       <div className="flex flex-col items-center gap-10 mb-16 relative">
         {/* Logo Container */}
-        <div className="relative p-6 rounded-[40px] bg-white/3 border border-white/5 backdrop-blur-sm group transition-all duration-500 hover:border-blue-500/20 hover:shadow-[0_0_60px_rgba(59,130,246,0.15)]">
+        <div className="relative p-8 rounded-[40px] bg-white/3 border border-white/5 backdrop-blur-sm group transition-all duration-500 hover:border-blue-500/20 hover:shadow-[0_0_60px_rgba(59,130,246,0.15)]">
           <Image
             src="/images/logo.webp"
             alt="KAC For Youth"
-            width={700}
-            height={700}
-            className="w-40 md:w-56 drop-shadow-[0_0_20px_rgba(255,255,255,0.08)] transition-transform duration-500 group-hover:scale-[1.03]"
+            width={800}
+            height={800}
+            className="w-52 md:w-72 drop-shadow-[0_0_20px_rgba(255,255,255,0.08)] transition-transform duration-500 group-hover:scale-[1.03]"
             priority
           />
         </div>
