@@ -1,45 +1,39 @@
 "use client";
 
-type CourseModalProps = {
-  course: {
-    title: string;
-    description: string;
-    topics: string[];
-  } | null;
-  isOpen: boolean;
-  onClose: () => void;
-};
-
-export default function CourseModal({ course, isOpen, onClose }: CourseModalProps) {
-  if (!isOpen || !course) return null;
+export default function CourseModal({ course, isOpen, onClose }: any) {
+  if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      
-      {/* Background */}
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: "rgba(0,0,0,0.8)",
+        zIndex: 9999,
+      }}
+      onClick={onClose}
+    >
       <div
-        className="absolute inset-0 bg-black/70"
-        onClick={onClose}
-      />
+        style={{
+          background: "#0f172a",
+          padding: 20,
+          margin: "100px auto",
+          width: "400px",
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2>{course?.title}</h2>
 
-      {/* Modal Box */}
-      <div className="relative bg-[#0f172a] max-w-lg w-full p-6 rounded-2xl shadow-lg z-10">
-        
-        <h2 className="text-2xl font-bold mb-3">{course.title}</h2>
-
-        <p className="text-slate-400 mb-4">{course.description}</p>
-
-        <ul className="space-y-2 text-slate-300 max-h-64 overflow-y-auto">
-          {course.topics.map((t, i) => (
-            <li key={i}>✔ {t}</li>
+        <ul>
+          {course?.topics?.map((t: string, i: number) => (
+            <li key={i}>{t}</li>
           ))}
         </ul>
 
-        <div className="mt-6 text-right">
-          <button onClick={onClose} className="btn-primary">
-            Close
-          </button>
-        </div>
+        <button onClick={onClose}>Close</button>
       </div>
     </div>
   );
