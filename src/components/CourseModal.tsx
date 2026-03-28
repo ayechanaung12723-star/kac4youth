@@ -1,77 +1,62 @@
 "use client";
 import Image from "next/image";
 
-export default function CourseCard({ course, onClick, isSelected }: any) {
+export default function CourseModal({ course, isSelected }: any) {
+  if (!course) return null;
+
   return (
     <div
-      onClick={onClick}
-      className={`relative group flex flex-col items-center gap-6 p-8 rounded-3xl cursor-pointer transition-all duration-300 ease-in-out border text-center h-full ${
+      className={`relative group flex flex-col items-center gap-8 p-10 rounded-[32px] transition-all duration-500 border h-full ${
         isSelected
-          ? "bg-white text-black shadow-[0_0_30px_rgba(255,255,255,0.2)] border-white scale-[1.02]"
-          : "bg-[#0f172a]/80 text-white backdrop-blur-sm border-white/5 hover:border-white/10 hover:shadow-[0_0_20px_rgba(59,130,246,0.1)] hover:-translate-y-1"
+          ? "bg-[#0f172a]/80 text-white backdrop-blur-xl border-white/10 shadow-2xl"
+          : "bg-transparent opacity-50"
       }`}
     >
-      {/* Selection Glow Effect (for non-selected cards) */}
-      {!isSelected && (
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-radial from-blue-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl pointer-events-none" />
-      )}
-
-      {/* Course Icon Container with glass effect on selection */}
-      <div className={`p-5 rounded-[28px] border ${isSelected ? 'bg-black/5 border-black/10' : 'bg-white/5 border-white/5 group-hover:bg-blue-500/10 group-hover:border-blue-500/20'}`}>
-        <Image 
-          src={course.icon} 
-          alt={`${course.title} course icon`} 
-          width={80} 
-          height={80} 
-          className="w-16 h-16 md:w-20 md:h-20 transition-transform duration-300 group-hover:scale-[1.05]"
-        />
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <h3 className={`font-extrabold text-xl md:text-2xl leading-tight ${isSelected ? 'text-black' : 'text-white'}`}>
+      {/* Course Header Info */}
+      <div className="flex flex-col items-center text-center gap-4">
+        <div className="p-6 rounded-[30px] bg-gradient-to-b from-blue-500/20 to-transparent border border-blue-500/20 shadow-inner">
+          <Image 
+            src={course.icon} 
+            alt={course.title} 
+            width={100} 
+            height={100} 
+            className="w-20 h-20 md:w-24 md:h-24 object-contain animate-float"
+          />
+        </div>
+        <h3 className="text-3xl md:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
           {course.title}
         </h3>
-        <p className={`text-sm md:text-base ${isSelected ? 'text-black/70' : 'text-slate-400'}`}>
+        <p className="text-slate-400 max-w-md leading-relaxed text-lg">
           {course.description}
         </p>
       </div>
 
-      {/* Modern Topic List - using Column Layout & Icon Variety */}
-      <div className="mt-6 w-full text-left space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {course.topics.slice(0, 4).map((topic: string, index: number) => (
+      {/* Grid Layout for Topics */}
+      <div className="w-full mt-4">
+        <h4 className="text-sm font-bold uppercase tracking-widest text-blue-400 mb-6 flex items-center gap-2">
+          <span className="w-8 h-[2px] bg-blue-400/30"></span>
+          What you will learn
+        </h4>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {course.topics.map((topic: string, index: number) => (
             <div 
               key={index} 
-              className={`flex items-start gap-3 p-4 rounded-xl border ${isSelected ? 'bg-black/3 border-black/5' : 'bg-white/5 border-white/5 group-hover:bg-white/8 group-hover:border-white/8'}`}
+              className="flex items-start gap-4 p-5 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all duration-300 group/item"
             >
-              <div className={`w-8 h-8 rounded-full border flex items-center justify-center shrink-0 ${isSelected ? 'bg-white text-blue-600 border-blue-600/20' : 'bg-blue-500/10 text-blue-400 border-blue-500/20 group-hover:border-blue-500/30'}`}>
-                {/* Icon Variety based on topic index - you can customize this logic further */}
-                {index === 0 && <span className="text-xl">📚</span>}
-                {index === 1 && <span className="text-xl">💻</span>}
-                {index === 2 && <span className="text-xl">🚀</span>}
-                {index === 3 && <span className="text-xl">💰</span>}
+              <div className="w-10 h-10 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center shrink-0 group-hover/item:scale-110 transition-transform">
+                {index % 4 === 0 && <span>📚</span>}
+                {index % 4 === 1 && <span>💻</span>}
+                {index % 4 === 2 && <span>🚀</span>}
+                {index % 4 === 3 && <span>💰</span>}
               </div>
-              <p className={`text-sm md:text-base ${isSelected ? 'text-black/80' : 'text-slate-300'}`}>
+              <p className="text-slate-300 font-medium leading-snug pt-1">
                 {topic}
-              </div>
+              </p>
             </div>
           ))}
         </div>
-        {course.topics.length > 4 && (
-          <p className={`text-xs md:text-sm italic text-center ${isSelected ? 'text-black/60' : 'text-slate-500'}`}>
-            + {course.topics.length - 4} more topics...
-          </p>
-        )}
       </div>
-
-      {/* Selected Indicator for Mobile */}
-      {isSelected && (
-        <div className="absolute top-4 right-4 text-green-500">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-          </svg>
-        </div>
-      )}
     </div>
   );
 }
