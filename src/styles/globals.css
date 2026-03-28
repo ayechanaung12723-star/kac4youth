@@ -10,6 +10,7 @@ body {
   background: #020617;
   color: white;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
 }
 
 /* Typography */
@@ -71,4 +72,11 @@ p {
 }
 .animate-slide-up {
   animation: slide-up 0.3s ease forwards;
+}
+
+/* Images */
+img, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
