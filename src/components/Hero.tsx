@@ -9,13 +9,13 @@ export default function Hero() {
     <section className="pt-40 pb-24 px-6 text-center max-w-6xl mx-auto">
 
       {/* Logo + Animation */}
-      <div className="flex justify-center items-center gap-6 mb-10">
+      <div className="flex justify-center items-center gap-12 mb-16">
         <Image
           src="/images/logo.webp"
           alt="KAC"
-          width={200}
-          height={200}
-          className="w-32 md:w-44"
+          width={700}
+          height={700}
+          className="w-44 md:w-72 drop-shadow-[0_0_60px_rgba(255,255,255,0.15)]"
         />
 
         <div className="w-14 opacity-80">
