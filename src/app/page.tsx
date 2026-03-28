@@ -8,7 +8,7 @@ import SocialLinks from "@/components/SocialLinks";
 import Footer from "@/components/Footer";
 import FloatingCTA from "@/components/FloatingCTA";
 import CTA from "@/components/CTA";
-import { courses } from "@/data/course";
+import { courses } from "@/data/courses";
 
 export default function Home() {
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
