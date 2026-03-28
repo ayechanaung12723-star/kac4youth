@@ -10,12 +10,7 @@ export default function CTA() {
       >
         Join Telegram
       </a>
-      <a
-        href="#courses"
-        className="btn-secondary"
-      >
-        Browse Courses
-      </a>
+      
     </div>
   );
 }
