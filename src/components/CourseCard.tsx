@@ -7,16 +7,15 @@ type CourseCardProps = {
     description: string;
     topics: string[];
   };
-  onClick?: () => void; // onClick prop ထည့်
+  onClick?: () => void;
 };
 
 export default function CourseCard({ course, onClick }: CourseCardProps) {
   return (
     <div
+      onClick={onClick}
       className="bg-[#0f172a] p-6 rounded-2xl soft-shadow hover-up cursor-pointer"
-      onClick={onClick} // click handler
     >
-      {/* ICON */}
       <div className="mb-4">
         <Image
           src={course.icon}
@@ -27,21 +26,18 @@ export default function CourseCard({ course, onClick }: CourseCardProps) {
         />
       </div>
 
-      {/* TITLE */}
       <h3 className="text-xl font-semibold mb-2">{course.title}</h3>
 
-      {/* DESCRIPTION */}
       <p className="text-slate-400 mb-4">{course.description}</p>
 
-      {/* TOPICS */}
       <ul className="text-sm text-slate-300 mb-6 space-y-1">
-        {course.topics.map((t, i) => (
+        {course.topics.slice(0, 3).map((t, i) => (
           <li key={i}>✔ {t}</li>
         ))}
+        {course.topics.length > 3 && <li>...and more</li>}
       </ul>
 
-      {/* BUTTON */}
-      <button className="btn-primary text-sm">Join Course</button>
+      <button className="btn-primary text-sm">View Details</button>
     </div>
   );
 }
