@@ -5,41 +5,20 @@ import { typingLessons } from "../data/typingContent";
 
 const splitter = new GraphemeSplitter();
 
-// ✅ Unique Name Pool
 const namePool = [
   "Aung Paing","Kyaw Thet","Wai Lin Aung","Su Lay",
   "Hein Htet Aung","May Thazin","Ko John","Zin Mar",
-  "Min Khant","Thar Nyi","Mg Mg","Nay Lin",
-  "Phyo Wai","Kaung Htet","Ye Yint","Hnin Ei"
+  "Min Khant","Thar Nyi","Mg Mg","Nay Lin"
 ];
 
-// ✅ Shuffle (no duplicate)
-const shuffleArray = (array) => {
-  let arr = [...array];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-};
-
-// ✅ Daily Unique Leaderboard
+// ✅ Unique daily leaderboard
 const getDailyRandomScores = () => {
-  const today = new Date().toDateString();
-  let seed = today.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
-
-  const random = () => {
-    seed = (seed * 9301 + 49297) % 233280;
-    return seed / 233280;
-  };
-
-  const shuffled = shuffleArray(namePool).slice(0, 10);
+  const shuffled = [...namePool].sort(() => 0.5 - Math.random()).slice(0, 10);
 
   return shuffled.map((name) => {
-    const wpm = Math.floor(random() * 50) + 40;
-    const accuracy = Math.floor(random() * 10) + 90;
+    const wpm = Math.floor(Math.random() * 50) + 40;
+    const accuracy = Math.floor(Math.random() * 10) + 90;
     const score = Math.round(wpm * (accuracy / 100));
-
     return { name, wpm, accuracy, score };
   }).sort((a, b) => b.score - a.score);
 };
@@ -59,16 +38,11 @@ export default function TypingTest() {
   const [showModal, setShowModal] = useState(true);
 
   const inputRef = useRef(null);
-  const typeSound = useRef(null);
-  const errorSound = useRef(null);
 
   const lessons =
     mode === "english" ? typingLessons.english : typingLessons.myanmar;
 
   useEffect(() => {
-    typeSound.current = new Audio("/sounds/type.mp3");
-    errorSound.current = new Audio("/sounds/error.mp3");
-
     const savedName = localStorage.getItem("kac_username");
     if (savedName) {
       setUsername(savedName);
@@ -78,23 +52,8 @@ export default function TypingTest() {
     const real = JSON.parse(localStorage.getItem("kac_top_scores")) || [];
     const fake = getDailyRandomScores();
 
-    const merged = [...real, ...fake]
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 10);
-
-    setTopScores(merged);
+    setTopScores([...real, ...fake].sort((a,b)=>b.score-a.score).slice(0,10));
   }, []);
-
-  // 🔥 IMPORTANT FIX → keep focus always (IME fix)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!showModal && inputRef.current) {
-        inputRef.current.focus();
-      }
-    }, 500);
-
-    return () => clearInterval(interval);
-  }, [showModal]);
 
   const generateLesson = (mode) => {
     const words =
@@ -139,33 +98,20 @@ export default function TypingTest() {
     setAccuracy(Math.round((correct / targetChars.length) * 100) || 0);
   }, [inputChars, targetChars]);
 
+  const score = Math.round(wpm * (accuracy / 100));
+
   const saveScore = () => {
     const data = { name: username, wpm, accuracy, score };
-
     let arr = JSON.parse(localStorage.getItem("kac_top_scores")) || [];
     arr.push(data);
-
     localStorage.setItem("kac_top_scores", JSON.stringify(arr));
   };
 
-  const handleInput = (e) => {
-    const value = e.target.value;
-    const newChars = splitter.splitGraphemes(value);
-
-    if (newChars.length > inputChars.length) {
-      const i = newChars.length - 1;
-
-      if (newChars[i] === targetChars[i]) {
-        typeSound.current.currentTime = 0;
-        typeSound.current.play();
-      } else {
-        errorSound.current.currentTime = 0;
-        errorSound.current.play();
-      }
+  useEffect(() => {
+    if (input === text && score > 0) {
+      saveScore();
     }
-
-    setInput(value);
-  };
+  }, [input]);
 
   const reset = () => {
     setInput("");
@@ -175,36 +121,29 @@ export default function TypingTest() {
     setLessonIndex(Math.floor(Math.random() * lessons.length));
   };
 
-  const progress = (inputChars.length / targetChars.length) * 100;
-  const score = Math.round(wpm * (accuracy / 100));
-
-  useEffect(() => {
-    if (input === text && score > 0) {
-      saveScore();
-    }
-  }, [input]);
-
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0b0f1a] text-white px-4">
+    <div
+      className="min-h-screen flex flex-col items-center justify-center bg-[#0b0f1a] text-white px-4"
+      onClick={() => inputRef.current?.focus()}
+    >
 
       {/* MODAL */}
       {showModal && (
-        <div className="fixed inset-0 backdrop-blur-md bg-black/70 flex items-center justify-center z-50">
-          <div className="bg-[#111827] p-8 rounded-2xl w-[90%] max-w-md text-center">
-            <h2 className="text-xl mb-4">Enter Your Name</h2>
-
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center">
+          <div className="bg-gray-900 p-6 rounded-xl w-[300px] text-center">
+            <h2 className="mb-4">Enter Name</h2>
             <input
-              className="w-full px-4 py-3 rounded-lg bg-black text-white border border-gray-600"
+              className="w-full p-2 text-black rounded"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e)=>setUsername(e.target.value)}
             />
-
             <button
-              className="mt-6 w-full py-3 bg-white text-black rounded-lg"
-              onClick={() => {
-                if (!username.trim()) return;
+              className="mt-4 w-full bg-white text-black p-2 rounded"
+              onClick={()=>{
+                if(!username) return;
                 localStorage.setItem("kac_username", username);
                 setShowModal(false);
+                setTimeout(()=>inputRef.current?.focus(),100);
               }}
             >
               Start
@@ -214,29 +153,29 @@ export default function TypingTest() {
       )}
 
       {/* TEXT */}
-      <div className="text-3xl text-center font-mono max-w-3xl leading-relaxed">
+      <div className="text-3xl text-center max-w-3xl font-mono leading-relaxed">
         {targetChars.map((c, i) => {
           let cls = "text-gray-600";
           if (i < inputChars.length)
             cls = inputChars[i] === c ? "text-white" : "text-red-500";
           if (i === inputChars.length)
-            cls = "border-b-2 border-yellow-400 animate-pulse";
+            cls = "border-b-2 border-yellow-400";
 
           return <span key={i} className={cls}>{c}</span>;
         })}
       </div>
 
-      {/* 👉 FIXED TEXTAREA (VISIBLE FOR IME) */}
+      {/* ✅ IME SAFE INPUT */}
       <textarea
         ref={inputRef}
         value={input}
-        onChange={handleInput}
-        className="absolute top-0 left-0 w-full h-full opacity-0"
-        style={{ caretColor: "transparent" }}
+        onChange={(e)=>setInput(e.target.value)}
+        className="mt-6 w-full max-w-xl p-3 rounded bg-black text-white border border-gray-700 outline-none"
+        placeholder="Start typing here..."
       />
 
       {/* STATS */}
-      <div className="flex gap-10 mt-8">
+      <div className="flex gap-10 mt-6">
         <div>{wpm} WPM</div>
         <div>{accuracy}%</div>
         <div>{score}</div>
@@ -244,8 +183,8 @@ export default function TypingTest() {
 
       {/* LEADERBOARD */}
       <div className="mt-10 w-full max-w-md">
-        {topScores.map((s, i) => (
-          <div key={i} className="flex justify-between bg-slate-800 p-3 mb-2 rounded-lg">
+        {topScores.map((s,i)=>(
+          <div key={i} className="flex justify-between bg-slate-800 p-2 mb-2 rounded">
             <span>#{i+1} {s.name}</span>
             <span>{s.score}</span>
           </div>
