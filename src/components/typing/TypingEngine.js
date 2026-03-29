@@ -7,7 +7,6 @@ import TypingInput from "./TypingInput";
 import StatsBar from "./StatsBar";
 import Leaderboard from "../leaderboard/Leaderboard";
 import NameModal from "../ui/NameModal";
-import HomeButton from "../ui/HomeButton";
 
 import { typingLessons } from "../../data/typingContent";
 import { getDailyLeaderboard } from "../../data/leaderboardData";
@@ -70,13 +69,10 @@ export default function TypingEngine() {
   // Accuracy
   useEffect(() => {
     let correct = 0;
-    inputChars.forEach((c, i) => {
-      if (c === targetChars[i]) correct++;
-    });
+    inputChars.forEach((c, i) => { if (c === targetChars[i]) correct++; });
     setAccuracy(Math.round((correct / targetChars.length) * 100) || 0);
   }, [inputChars, targetChars]);
 
-  // Handle typing sound
   const handleInput = (value) => {
     const newChars = splitter.splitGraphemes(value);
     const prevLength = inputChars.length;
@@ -115,8 +111,6 @@ export default function TypingEngine() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#0b0f1a] text-white px-4 relative" onClick={() => inputRef.current?.focus()}>
-      <HomeButton />
-
       {showModal && <NameModal username={username} setUsername={setUsername} onStart={startTyping} />}
 
       {/* Mode toggle */}
