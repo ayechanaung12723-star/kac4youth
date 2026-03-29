@@ -12,13 +12,48 @@ export default function TypingTest() {
   const [startTime, setStartTime] = useState(null);
   const [wpm, setWpm] = useState(0);
   const [accuracy, setAccuracy] = useState(100);
+  const [isAI, setIsAI] = useState(false);
 
   const inputRef = useRef(null);
+  const typeSound = useRef(null);
+  const errorSound = useRef(null);
 
   const lessons =
     mode === "english" ? typingLessons.english : typingLessons.myanmar;
 
-  const text = lessons[lessonIndex];
+  // 🔊 Load sounds
+  useEffect(() => {
+    typeSound.current = new Audio("/sounds/type.mp3");
+    errorSound.current = new Audio("/sounds/error.mp3");
+  }, []);
+
+  // 🤖 AI Lesson Generator
+  const generateLesson = (mode) => {
+    if (mode === "english") {
+      const words = [
+        "success","future","money","freedom","focus",
+        "discipline","growth","power","skill","mindset"
+      ];
+      return Array.from({ length: 15 }, () =>
+        words[Math.floor(Math.random() * words.length)]
+      ).join(" ");
+    } else {
+      const words = [
+        "အောင်မြင်မှု","အနာဂတ်","ငွေကြေး","လွတ်လပ်မှု",
+        "အာရုံစိုက်မှု","ကြိုးစားမှု","တိုးတက်မှု"
+      ];
+      return Array.from({ length: 12 }, () =>
+        words[Math.floor(Math.random() * words.length)]
+      ).join(" ");
+    }
+  };
+
+  const getText = () => {
+    if (isAI) return generateLesson(mode);
+    return lessons[lessonIndex];
+  };
+
+  const text = getText();
 
   const targetChars = splitter.splitGraphemes(text);
   const inputChars = splitter.splitGraphemes(input);
@@ -51,9 +86,38 @@ export default function TypingTest() {
     });
 
     setAccuracy(
-      Math.round((correct / targetChars.length) * 100) || 0
+      Math.max(0, Math.round((correct / targetChars.length) * 100))
     );
   }, [inputChars, targetChars]);
+
+  // 🔊 Typing handler
+  const handleInput = (e) => {
+    const value = e.target.value;
+
+    const newChars = splitter.splitGraphemes(value);
+    const prevLength = inputChars.length;
+
+    // detect new input only
+    if (newChars.length > prevLength) {
+      const lastIndex = newChars.length - 1;
+      const lastChar = newChars[lastIndex];
+      const expectedChar = targetChars[lastIndex];
+
+      if (!startTime && newChars.length === 1) {
+        setStartTime(Date.now());
+      }
+
+      if (lastChar === expectedChar) {
+        typeSound.current.currentTime = 0;
+        typeSound.current.play();
+      } else {
+        errorSound.current.currentTime = 0;
+        errorSound.current.play();
+      }
+    }
+
+    setInput(value);
+  };
 
   const reset = (newMode) => {
     const m = newMode || mode;
@@ -74,13 +138,12 @@ export default function TypingTest() {
   };
 
   const progress = (inputChars.length / targetChars.length) * 100;
-
   const score = Math.round(wpm * (accuracy / 100));
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#0b0f1a] text-white px-4">
 
-      {/* Mode Switch */}
+      {/* Mode + AI */}
       <div className="flex gap-4 mb-10">
         <button
           onClick={() => reset("english")}
@@ -102,10 +165,17 @@ export default function TypingTest() {
         >
           MM
         </button>
+
+        <button
+          onClick={() => setIsAI(!isAI)}
+          className="px-4 py-2 border border-gray-600 rounded-full text-sm"
+        >
+          {isAI ? "AI ON" : "AI OFF"}
+        </button>
       </div>
 
-      {/* Text Area */}
-      <div className="text-3xl leading-relaxed max-w-3xl text-center font-mono relative">
+      {/* Text */}
+      <div className="text-3xl leading-relaxed max-w-3xl text-center font-mono">
 
         {targetChars.map((char, i) => {
           let className = "text-gray-600";
@@ -118,7 +188,8 @@ export default function TypingTest() {
           }
 
           if (i === inputChars.length) {
-            className = "border-b-2 border-yellow-400 animate-pulse";
+            className =
+              "border-b-2 border-yellow-400 animate-pulse";
           }
 
           return (
@@ -133,7 +204,7 @@ export default function TypingTest() {
       <textarea
         ref={inputRef}
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={handleInput}
         className="opacity-0 absolute"
         autoFocus
         onPaste={(e) => e.preventDefault()}
