@@ -10,19 +10,18 @@ export default function TypingTest() {
 
   const targetText = typingLessons[language][lessonIndex];
 
-  useEffect(() => {
-    if (userInput.length === 1 && !startTime) {
-      setStartTime(Date.now());
+  // မြန်မာစာလုံးဆင့်များကို မခွဲဘဲ စာကြောင်းလိုက် ပြသရန် function
+  const renderText = () => {
+    if (language === 'myanmar') {
+      return <span className="text-emerald-400">{targetText}</span>;
     }
-    if (userInput === targetText) {
-      calculateWPM();
-    }
-  }, [userInput, targetText, startTime]);
-
-  const calculateWPM = () => {
-    const timeElapsed = (Date.now() - startTime) / 60000; // in minutes
-    const words = targetText.split(' ').length;
-    setWpm(Math.round(words / timeElapsed));
+    return targetText.split('').map((char, index) => {
+      let color = "text-slate-500";
+      if (index < userInput.length) {
+        color = userInput[index] === char ? "text-emerald-400" : "text-rose-500 bg-rose-500/10";
+      }
+      return <span key={index} className={color}>{char}</span>;
+    });
   };
 
   const resetTest = (lang) => {
@@ -34,66 +33,36 @@ export default function TypingTest() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-8 bg-[#0f172a] rounded-2xl shadow-2xl border border-white/10 mt-10">
-      {/* Language Selection Buttons */}
-      <div className="flex gap-4 mb-8 justify-center">
-        <button 
-          onClick={() => resetTest('english')} 
-          className={`px-6 py-2 rounded-full font-medium transition-all ${language === 'english' ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
-        >
-          English
-        </button>
-        <button 
-          onClick={() => resetTest('myanmar')} 
-          className={`px-6 py-2 rounded-full font-medium transition-all ${language === 'myanmar' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/30' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
-        >
-          မြန်မာ (Unicode)
-        </button>
+    <div className="max-w-4xl mx-auto p-6 bg-[#0f172a] rounded-2xl border border-white/10">
+      <div className="flex gap-4 mb-6 justify-center">
+        <button onClick={() => resetTest('english')} className={`px-6 py-2 rounded-full ${language === 'english' ? 'bg-blue-600' : 'bg-slate-800'}`}>English</button>
+        <button onClick={() => resetTest('myanmar')} className={`px-6 py-2 rounded-full ${language === 'myanmar' ? 'bg-emerald-600' : 'bg-slate-800'}`}>မြန်မာ</button>
       </div>
 
-      {/* Target Text Display Area */}
-      <div className="mb-8 p-6 bg-slate-900/50 rounded-xl border border-white/5 text-2xl leading-relaxed select-none min-h-[120px] flex flex-wrap gap-x-1 content-center">
-        {targetText.split('').map((char, index) => {
-          let color = "text-slate-500"; // မရိုက်ရသေးသော စာလုံး (မှိန်မှိန်)
-          if (index < userInput.length) {
-            color = userInput[index] === char ? "text-emerald-400" : "text-rose-500 bg-rose-500/10 rounded";
-          }
-          return (
-            <span key={index} className={`${color} transition-colors duration-150`}>
-              {char}
-            </span>
-          );
-        })}
+      {/* Target Text Area */}
+      <div className="mb-6 p-6 bg-slate-900 rounded-xl text-2xl leading-relaxed min-h-[100px] border border-white/5">
+        {renderText()}
       </div>
 
-      {/* Typing Input Area */}
       <textarea
-        className="w-full bg-slate-900 border-2 border-white/10 p-5 rounded-xl focus:outline-none focus:border-blue-500 text-xl text-white placeholder-slate-600 transition-all shadow-inner"
+        className="w-full bg-slate-800 border-2 border-white/10 p-4 rounded-xl text-white text-xl focus:border-blue-500 outline-none"
         rows="3"
         value={userInput}
         onChange={(e) => setUserInput(e.target.value)}
-        placeholder="ဒီမှာ စတင်ရိုက်နှိပ်ပါ..."
-        spellCheck="false"
+        placeholder="ရိုက်နှိပ်ပြီး လေ့ကျင့်ပါ..."
       />
 
-      {/* Results / Feedback Area */}
-      {userInput === targetText && (
-        <div className="mt-8 text-center p-6 bg-blue-500/10 rounded-xl border border-blue-500/20 animate-in fade-in zoom-in duration-300">
-          <p className="text-3xl font-bold text-emerald-400 mb-2">ဂုဏ်ယူပါတယ်! 🎉</p>
-          <div className="flex justify-center gap-8 items-center mt-4">
-            <div className="text-center">
-              <p className="text-slate-400 text-sm uppercase">Speed</p>
-              <p className="text-2xl font-mono font-bold text-white">{wpm} WPM</p>
-            </div>
-            <button 
-              onClick={() => resetTest(language)} 
-              className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-2 rounded-full font-bold transition-all transform hover:scale-105 active:scale-95"
-            >
-              နောက်တစ်ခု စမ်းမယ်
-            </button>
-          </div>
+      {/* Keyboard Layout Image Display */}
+      <div className="mt-10">
+        <p className="text-slate-400 text-sm mb-4 text-center">လက်ကွက်လမ်းညွှန်ပုံစံ</p>
+        <div className="rounded-xl overflow-hidden border border-white/10 opacity-80 hover:opacity-100 transition-opacity">
+           {language === 'english' ? (
+             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Qwerty.svg/1200px-Qwerty.svg.png" alt="English Keyboard" />
+           ) : (
+             <img src="https://kac-assets-placeholder.com/myanmar-keyboard.png" alt="Myanmar Keyboard" /> 
+           )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
