@@ -1,21 +1,13 @@
 "use client";
 import React from "react";
-import GraphemeSplitter from "grapheme-splitter";
+import { typingLessons } from "../../data/typingContent";
 
-const splitter = new GraphemeSplitter();
-
-export default function TypingDisplay({ text, input }) {
-  const targetChars = splitter.splitGraphemes(text);
-  const inputChars = splitter.splitGraphemes(input);
+export default function TypingDisplay({ mode, lessonIndex }) {
+  const lessonText = typingLessons[mode][lessonIndex];
 
   return (
-    <div className="text-3xl leading-relaxed max-w-3xl text-center font-mono">
-      {targetChars.map((char, i) => {
-        let className = "text-gray-600";
-        if (i < inputChars.length) className = inputChars[i] === char ? "text-white" : "text-red-500";
-        if (i === inputChars.length) className = "border-b-2 border-yellow-400 animate-pulse";
-        return <span key={i} className={className}>{char}</span>;
-      })}
+    <div className="w-full max-w-2xl p-4 mb-4 bg-gray-800 rounded text-white min-h-[120px]">
+      <p className="whitespace-pre-wrap break-words">{lessonText}</p>
     </div>
   );
 }
