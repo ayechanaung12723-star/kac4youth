@@ -1,5 +1,5 @@
 const randomNames = [
-  "Aung Paing","Kyaw Thet","Wai Lin Aung","Su Lay","Hein Htet Aung","May Thazin","Ko John","Nandar"
+  "Aung Paing","Kyaw Thet","Wai Lin Aung","Su Lay","Hein Htet Aung","May Thazin","Ko John","Nandar","Hnin Ei Ei","Zaw Win"
 ];
 
 export function getDailyLeaderboard() {
@@ -8,12 +8,11 @@ export function getDailyLeaderboard() {
 
   let saved = JSON.parse(localStorage.getItem(key) || "null");
   if (!saved) {
-    // Generate top 10 random scores with unique names
     const used = new Set();
-    saved = Array.from({length: 10}, () => {
+    saved = Array.from({length:10},()=>{
       let name;
-      do { name = randomNames[Math.floor(Math.random()*randomNames.length)]; } 
-      while (used.has(name));
+      do { name=randomNames[Math.floor(Math.random()*randomNames.length)]; }
+      while(used.has(name));
       used.add(name);
       return {
         name,
@@ -22,7 +21,7 @@ export function getDailyLeaderboard() {
         score: Math.floor(Math.random()*100)+50
       };
     });
-    localStorage.setItem(key, JSON.stringify(saved));
+    localStorage.setItem(key,JSON.stringify(saved));
   }
   return saved;
 }
