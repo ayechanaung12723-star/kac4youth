@@ -1,0 +1,24 @@
+/* typing.css */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;700&display=swap');
+
+.typing-container .font-myanmar {
+  font-family: 'Noto Sans Myanmar', sans-serif !important;
+  letter-spacing: 0 !important;
+  word-spacing: 0 !important;
+  line-height: 2.2 !important;
+  display: inline-block;
+}
+
+/* မြန်မာစာလုံးတွေ တစ်လုံးချင်းစီ ခွဲမထွက်သွားစေရန် */
+.typing-container .font-myanmar span {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  letter-spacing: 0 !important;
+}
+
+/* English အတွက် font */
+.typing-container .font-mono {
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: -0.02em;
+}

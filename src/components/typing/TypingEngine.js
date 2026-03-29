@@ -1,5 +1,6 @@
 "use client";
 
+import "../../styles/typing.css";
 import { useState, useEffect } from "react";
 import { typingLessons } from "../../data/typingData"; 
 import NameModal from "../ui/NameModal";
@@ -50,7 +51,7 @@ export default function TypingEngine() {
   };
 
   return (
-    <div className="w-full max-w-4xl px-4 flex flex-col items-center pb-20 select-none">
+    <div className="typing-container w-full max-w-4xl px-4 flex flex-col items-center">
       {showNameModal && <NameModal onSubmit={handleSetName} />}
 
       {!showNameModal && (
