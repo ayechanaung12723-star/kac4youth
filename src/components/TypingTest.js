@@ -5,6 +5,39 @@ import { typingLessons } from "../data/typingContent";
 
 const splitter = new GraphemeSplitter();
 
+// 🎲 Random Names Pool
+const namePool = [
+  "Aung Paing","Kyaw Thet","Wai Lin Aung","Su Lay",
+  "Hein Htet Aung","May Thazin","Ko John","Zin Mar",
+  "Min Khant","Thar Nyi","Mg Mg","Nay Lin",
+  "Phyo Wai","Kaung Htet","Ye Yint","Hnin Ei"
+];
+
+// 🎲 Daily Random Generator
+const getDailyRandomScores = () => {
+  const today = new Date().toDateString();
+  let seed = today.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+
+  const random = () => {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  };
+
+  let results = [];
+
+  for (let i = 0; i < 10; i++) {
+    const name = namePool[Math.floor(random() * namePool.length)];
+    const wpm = Math.floor(random() * 60) + 40;
+    const accuracy = Math.floor(random() * 10) + 90;
+    const score = Math.round(wpm * (accuracy / 100));
+
+    results.push({ name, wpm, accuracy, score });
+  }
+
+  results.sort((a, b) => b.score - a.score);
+  return results;
+};
+
 export default function TypingTest() {
   const [mode, setMode] = useState("english");
   const [lessonIndex, setLessonIndex] = useState(0);
@@ -14,8 +47,11 @@ export default function TypingTest() {
   const [accuracy, setAccuracy] = useState(100);
   const [isAI, setIsAI] = useState(false);
 
-  // 🏆 Leaderboard state
   const [topScores, setTopScores] = useState([]);
+
+  // 👤 User Name System
+  const [username, setUsername] = useState("");
+  const [showNameModal, setShowNameModal] = useState(true);
 
   const inputRef = useRef(null);
   const typeSound = useRef(null);
@@ -24,57 +60,52 @@ export default function TypingTest() {
   const lessons =
     mode === "english" ? typingLessons.english : typingLessons.myanmar;
 
-  // 🔊 Load sounds
+  // 🔊 Load + Leaderboard Init
   useEffect(() => {
     typeSound.current = new Audio("/sounds/type.mp3");
     errorSound.current = new Audio("/sounds/error.mp3");
 
-    // Load leaderboard
-    const saved = localStorage.getItem("kac_top_scores");
-    if (saved) {
-      setTopScores(JSON.parse(saved));
+    const savedName = localStorage.getItem("kac_username");
+    if (savedName) {
+      setUsername(savedName);
+      setShowNameModal(false);
     }
+
+    const realScores = JSON.parse(localStorage.getItem("kac_top_scores")) || [];
+    const randomScores = getDailyRandomScores();
+
+    const merged = [...realScores, ...randomScores]
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 10);
+
+    setTopScores(merged);
   }, []);
 
-  // 🤖 AI Lesson Generator
+  // 🤖 AI Lesson
   const generateLesson = (mode) => {
-    if (mode === "english") {
-      const words = [
-        "success","future","money","freedom","focus",
-        "discipline","growth","power","skill","mindset"
-      ];
-      return Array.from({ length: 15 }, () =>
-        words[Math.floor(Math.random() * words.length)]
-      ).join(" ");
-    } else {
-      const words = [
-        "အောင်မြင်မှု","အနာဂတ်","ငွေကြေး","လွတ်လပ်မှု",
-        "အာရုံစိုက်မှု","ကြိုးစားမှု","တိုးတက်မှု"
-      ];
-      return Array.from({ length: 12 }, () =>
-        words[Math.floor(Math.random() * words.length)]
-      ).join(" ");
-    }
+    const words =
+      mode === "english"
+        ? ["success","future","money","freedom","focus","discipline"]
+        : ["အောင်မြင်မှု","အနာဂတ်","ငွေကြေး","လွတ်လပ်မှု","ကြိုးစားမှု"];
+
+    return Array.from({ length: 15 }, () =>
+      words[Math.floor(Math.random() * words.length)]
+    ).join(" ");
   };
 
-  const getText = () => {
-    if (isAI) return generateLesson(mode);
-    return lessons[lessonIndex];
-  };
-
-  const text = getText();
+  const text = isAI
+    ? generateLesson(mode)
+    : lessons[lessonIndex];
 
   const targetChars = splitter.splitGraphemes(text);
   const inputChars = splitter.splitGraphemes(input);
 
-  // Start timer
   useEffect(() => {
     if (input.length === 1 && !startTime) {
       setStartTime(Date.now());
     }
   }, [input]);
 
-  // Live WPM
   useEffect(() => {
     if (!startTime) return;
 
@@ -87,56 +118,42 @@ export default function TypingTest() {
     return () => clearInterval(interval);
   }, [startTime, inputChars.length]);
 
-  // Accuracy
   useEffect(() => {
     let correct = 0;
     inputChars.forEach((c, i) => {
       if (c === targetChars[i]) correct++;
     });
 
-    setAccuracy(
-      Math.max(0, Math.round((correct / targetChars.length) * 100))
-    );
+    setAccuracy(Math.max(0, Math.round((correct / targetChars.length) * 100)));
   }, [inputChars, targetChars]);
 
-  // 🏆 Save Score (Local Top 10)
+  // 🏆 Save Score
   const saveScore = () => {
     const scoreData = {
+      name: username,
       wpm,
       accuracy,
-      score,
-      date: new Date().toLocaleDateString()
+      score
     };
 
-    let updated = [...topScores, scoreData];
-    updated.sort((a, b) => b.score - a.score);
-    updated = updated.slice(0, 10);
+    let realScores = JSON.parse(localStorage.getItem("kac_top_scores")) || [];
+    realScores.push(scoreData);
 
-    setTopScores(updated);
-    localStorage.setItem("kac_top_scores", JSON.stringify(updated));
+    localStorage.setItem("kac_top_scores", JSON.stringify(realScores));
   };
 
-  // 🔊 Typing handler
   const handleInput = (e) => {
+    if (showNameModal) return;
+
     const value = e.target.value;
-
     const newChars = splitter.splitGraphemes(value);
-    const prevLength = inputChars.length;
 
-    if (newChars.length > prevLength) {
-      const lastIndex = newChars.length - 1;
-      const lastChar = newChars[lastIndex];
-      const expectedChar = targetChars[lastIndex];
+    if (newChars.length > inputChars.length) {
+      const i = newChars.length - 1;
 
-      if (!startTime && newChars.length === 1) {
-        setStartTime(Date.now());
-      }
-
-      if (lastChar === expectedChar) {
-        typeSound.current.currentTime = 0;
+      if (newChars[i] === targetChars[i]) {
         typeSound.current.play();
       } else {
-        errorSound.current.currentTime = 0;
         errorSound.current.play();
       }
     }
@@ -144,27 +161,18 @@ export default function TypingTest() {
     setInput(value);
   };
 
-  const reset = (newMode) => {
-    const m = newMode || mode;
-    setMode(m);
+  const reset = () => {
     setInput("");
     setStartTime(null);
     setWpm(0);
     setAccuracy(100);
-
-    const newLessons =
-      m === "english"
-        ? typingLessons.english
-        : typingLessons.myanmar;
-
-    setLessonIndex(Math.floor(Math.random() * newLessons.length));
+    setLessonIndex(Math.floor(Math.random() * lessons.length));
     inputRef.current.focus();
   };
 
   const progress = (inputChars.length / targetChars.length) * 100;
   const score = Math.round(wpm * (accuracy / 100));
 
-  // Save when finished
   useEffect(() => {
     if (input === text && score > 0) {
       saveScore();
@@ -174,92 +182,66 @@ export default function TypingTest() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#0b0f1a] text-white px-4">
 
-      {/* Mode + AI */}
-      <div className="flex gap-4 mb-10">
-        <button onClick={() => reset("english")}
-          className={`px-6 py-2 rounded-full ${mode==="english"?"bg-white text-black":"text-gray-500"}`}>
-          EN
-        </button>
-        <button onClick={() => reset("myanmar")}
-          className={`px-6 py-2 rounded-full ${mode==="myanmar"?"bg-white text-black":"text-gray-500"}`}>
-          MM
-        </button>
+      {/* 👤 Name Modal */}
+      {showNameModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+          <div className="bg-slate-900 p-6 rounded-xl text-center">
+            <h2 className="mb-4 text-lg">Enter Your Name</h2>
+            <input
+              className="px-4 py-2 text-black rounded"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <button
+              className="mt-4 px-4 py-2 bg-white text-black rounded"
+              onClick={() => {
+                if (!username) return;
+                localStorage.setItem("kac_username", username);
+                setShowNameModal(false);
+                inputRef.current.focus();
+              }}
+            >
+              Start
+            </button>
+          </div>
+        </div>
+      )}
 
-        <button onClick={() => setIsAI(!isAI)}
-          className="px-4 py-2 border border-gray-600 rounded-full text-sm">
-          {isAI ? "AI ON" : "AI OFF"}
-        </button>
-      </div>
+      {/* TEXT */}
+      <div className="text-3xl text-center font-mono">
+        {targetChars.map((c, i) => {
+          let cls = "text-gray-600";
+          if (i < inputChars.length)
+            cls = inputChars[i] === c ? "text-white" : "text-red-500";
+          if (i === inputChars.length)
+            cls = "border-b-2 border-yellow-400";
 
-      {/* Text */}
-      <div className="text-3xl leading-relaxed max-w-3xl text-center font-mono">
-        {targetChars.map((char, i) => {
-          let className = "text-gray-600";
-
-          if (i < inputChars.length) {
-            className = inputChars[i] === char ? "text-white" : "text-red-500";
-          }
-
-          if (i === inputChars.length) {
-            className = "border-b-2 border-yellow-400 animate-pulse";
-          }
-
-          return <span key={i} className={className}>{char}</span>;
+          return <span key={i} className={cls}>{c}</span>;
         })}
       </div>
 
-      {/* Hidden Input */}
       <textarea
         ref={inputRef}
         value={input}
         onChange={handleInput}
         className="opacity-0 absolute"
-        autoFocus
-        onPaste={(e) => e.preventDefault()}
       />
 
-      {/* Progress */}
-      <div className="w-full max-w-xl mt-8 h-[2px] bg-gray-800">
-        <div className="h-[2px] bg-white transition-all"
-          style={{ width: `${progress}%` }} />
-      </div>
-
       {/* Stats */}
-      <div className="flex gap-10 mt-10 text-gray-400 text-sm">
-        <div>WPM <br /><span className="text-white text-xl">{wpm}</span></div>
-        <div>ACC <br /><span className="text-white text-xl">{accuracy}%</span></div>
-        <div>SCORE <br /><span className="text-white text-xl">{score}</span></div>
+      <div className="flex gap-6 mt-6">
+        <div>{wpm} WPM</div>
+        <div>{accuracy}%</div>
+        <div>{score}</div>
       </div>
 
-      {/* Finish */}
-      {input === text && (
-        <button onClick={() => reset()}
-          className="mt-10 px-6 py-2 bg-white text-black rounded-full">
-          NEXT
-        </button>
-      )}
-
-      {/* 🏆 Leaderboard */}
-      <div className="mt-16 w-full max-w-xl">
-        <h2 className="text-center mb-4 text-lg text-gray-400">
-          🏆 Top 10 Scores
-        </h2>
-
+      {/* Leaderboard */}
+      <div className="mt-10 w-full max-w-md">
         {topScores.map((s, i) => (
-          <div key={i}
-            className={`flex justify-between p-3 rounded-lg mb-2 bg-slate-800 ${
-              i===0?"border border-yellow-400":
-              i===1?"border border-gray-300":
-              i===2?"border border-orange-400":""
-            }`}>
-            <span>#{i+1}</span>
-            <span>{s.wpm} WPM</span>
-            <span>{s.accuracy}%</span>
-            <span className="text-yellow-400">{s.score}</span>
+          <div key={i} className="flex justify-between p-2 bg-slate-800 mb-2 rounded">
+            <span>#{i+1} {s.name}</span>
+            <span>{s.score}</span>
           </div>
         ))}
       </div>
-
     </div>
   );
 }
