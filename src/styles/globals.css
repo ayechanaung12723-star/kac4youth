@@ -93,3 +93,12 @@ p {
 .animate-float {
   animation: float 4s ease-in-out infinite;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;700&display=swap');
+
+.font-myanmar {
+  font-family: 'Noto Sans Myanmar', sans-serif !important;
+  line-height: 1.8;
+  /* မြန်မာစာလုံးများ တစ်လုံးနှင့်တစ်လုံး မကွာစေရန် */
+  letter-spacing: 0 !important; 
+}
