@@ -5,12 +5,25 @@ import { typingLessons } from "../data/typingContent";
 
 const splitter = new GraphemeSplitter();
 
+// ✅ Unique Name Pool
 const namePool = [
   "Aung Paing","Kyaw Thet","Wai Lin Aung","Su Lay",
   "Hein Htet Aung","May Thazin","Ko John","Zin Mar",
-  "Min Khant","Thar Nyi","Mg Mg","Nay Lin"
+  "Min Khant","Thar Nyi","Mg Mg","Nay Lin",
+  "Phyo Wai","Kaung Htet","Ye Yint","Hnin Ei"
 ];
 
+// ✅ Shuffle (no duplicate)
+const shuffleArray = (array) => {
+  let arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+};
+
+// ✅ Daily Unique Leaderboard
 const getDailyRandomScores = () => {
   const today = new Date().toDateString();
   let seed = today.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
@@ -20,16 +33,15 @@ const getDailyRandomScores = () => {
     return seed / 233280;
   };
 
-  let arr = [];
-  for (let i = 0; i < 10; i++) {
-    const name = namePool[Math.floor(random() * namePool.length)];
+  const shuffled = shuffleArray(namePool).slice(0, 10);
+
+  return shuffled.map((name) => {
     const wpm = Math.floor(random() * 50) + 40;
     const accuracy = Math.floor(random() * 10) + 90;
     const score = Math.round(wpm * (accuracy / 100));
-    arr.push({ name, wpm, accuracy, score });
-  }
 
-  return arr.sort((a, b) => b.score - a.score);
+    return { name, wpm, accuracy, score };
+  }).sort((a, b) => b.score - a.score);
 };
 
 export default function TypingTest() {
@@ -73,6 +85,17 @@ export default function TypingTest() {
     setTopScores(merged);
   }, []);
 
+  // 🔥 IMPORTANT FIX → keep focus always (IME fix)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!showModal && inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [showModal]);
+
   const generateLesson = (mode) => {
     const words =
       mode === "english"
@@ -88,13 +111,6 @@ export default function TypingTest() {
 
   const targetChars = splitter.splitGraphemes(text);
   const inputChars = splitter.splitGraphemes(input);
-
-  // 👉 ALWAYS keep focus (FIX Myanmar typing)
-  useEffect(() => {
-    if (!showModal && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [showModal]);
 
   useEffect(() => {
     if (input.length === 1 && !startTime) {
@@ -128,6 +144,7 @@ export default function TypingTest() {
 
     let arr = JSON.parse(localStorage.getItem("kac_top_scores")) || [];
     arr.push(data);
+
     localStorage.setItem("kac_top_scores", JSON.stringify(arr));
   };
 
@@ -137,6 +154,7 @@ export default function TypingTest() {
 
     if (newChars.length > inputChars.length) {
       const i = newChars.length - 1;
+
       if (newChars[i] === targetChars[i]) {
         typeSound.current.currentTime = 0;
         typeSound.current.play();
@@ -169,35 +187,34 @@ export default function TypingTest() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#0b0f1a] text-white px-4">
 
-      {/* 👤 BEAUTIFUL MODAL */}
+      {/* MODAL */}
       {showModal && (
         <div className="fixed inset-0 backdrop-blur-md bg-black/70 flex items-center justify-center z-50">
-          <div className="bg-[#111827] p-8 rounded-2xl shadow-2xl w-[90%] max-w-md text-center">
+          <div className="bg-[#111827] p-8 rounded-2xl w-[90%] max-w-md text-center">
             <h2 className="text-xl mb-4">Enter Your Name</h2>
 
             <input
-              className="w-full px-4 py-3 rounded-lg bg-black text-white border border-gray-600 outline-none focus:border-white"
-              placeholder="Your name..."
+              className="w-full px-4 py-3 rounded-lg bg-black text-white border border-gray-600"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
 
             <button
-              className="mt-6 w-full py-3 rounded-lg bg-white text-black font-semibold"
+              className="mt-6 w-full py-3 bg-white text-black rounded-lg"
               onClick={() => {
                 if (!username.trim()) return;
                 localStorage.setItem("kac_username", username);
                 setShowModal(false);
               }}
             >
-              Start Typing
+              Start
             </button>
           </div>
         </div>
       )}
 
       {/* TEXT */}
-      <div className="text-3xl leading-relaxed text-center max-w-3xl font-mono">
+      <div className="text-3xl text-center font-mono max-w-3xl leading-relaxed">
         {targetChars.map((c, i) => {
           let cls = "text-gray-600";
           if (i < inputChars.length)
@@ -209,22 +226,17 @@ export default function TypingTest() {
         })}
       </div>
 
-      {/* HIDDEN INPUT */}
+      {/* 👉 FIXED TEXTAREA (VISIBLE FOR IME) */}
       <textarea
         ref={inputRef}
         value={input}
         onChange={handleInput}
-        className="opacity-0 absolute"
-        autoFocus
+        className="absolute top-0 left-0 w-full h-full opacity-0"
+        style={{ caretColor: "transparent" }}
       />
 
-      {/* PROGRESS */}
-      <div className="w-full max-w-xl mt-6 h-[2px] bg-gray-800">
-        <div className="h-[2px] bg-white" style={{ width: `${progress}%` }} />
-      </div>
-
       {/* STATS */}
-      <div className="flex gap-10 mt-8 text-sm">
+      <div className="flex gap-10 mt-8">
         <div>{wpm} WPM</div>
         <div>{accuracy}%</div>
         <div>{score}</div>
@@ -239,6 +251,7 @@ export default function TypingTest() {
           </div>
         ))}
       </div>
+
     </div>
   );
 }
