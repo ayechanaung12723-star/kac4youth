@@ -1,177 +1,177 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import GraphemeSplitter from "grapheme-splitter";
 import { typingLessons } from "../data/typingContent";
+
+const splitter = new GraphemeSplitter();
 
 export default function TypingTest() {
   const [mode, setMode] = useState("english");
   const [lessonIndex, setLessonIndex] = useState(0);
-  const [userInput, setUserInput] = useState("");
+  const [input, setInput] = useState("");
   const [startTime, setStartTime] = useState(null);
   const [wpm, setWpm] = useState(0);
   const [accuracy, setAccuracy] = useState(100);
-  const intervalRef = useRef(null);
 
-  const lessonData =
+  const inputRef = useRef(null);
+
+  const lessons =
     mode === "english" ? typingLessons.english : typingLessons.myanmar;
-  const targetText = lessonData[lessonIndex];
+
+  const text = lessons[lessonIndex];
+
+  const targetChars = splitter.splitGraphemes(text);
+  const inputChars = splitter.splitGraphemes(input);
 
   // Start timer
   useEffect(() => {
-    if (userInput.length === 1 && !startTime) {
+    if (input.length === 1 && !startTime) {
       setStartTime(Date.now());
     }
-  }, [userInput, startTime]);
+  }, [input]);
 
-  // Live WPM update
+  // Live WPM
   useEffect(() => {
     if (!startTime) return;
 
-    intervalRef.current = setInterval(() => {
-      const timeElapsed = (Date.now() - startTime) / 60000;
-      const words = userInput.length / 5;
-      setWpm(Math.round(words / timeElapsed) || 0);
+    const interval = setInterval(() => {
+      const time = (Date.now() - startTime) / 60000;
+      const words = inputChars.length / 5;
+      setWpm(Math.round(words / time) || 0);
     }, 1000);
 
-    return () => clearInterval(intervalRef.current);
-  }, [startTime, userInput]);
+    return () => clearInterval(interval);
+  }, [startTime, inputChars.length]);
 
-  // Accuracy calculation
+  // Accuracy
   useEffect(() => {
     let correct = 0;
-    for (let i = 0; i < userInput.length; i++) {
-      if (userInput[i] === targetText[i]) correct++;
-    }
-    const acc = (correct / targetText.length) * 100;
-    setAccuracy(Math.max(0, Math.round(acc)));
-  }, [userInput, targetText]);
+    inputChars.forEach((c, i) => {
+      if (c === targetChars[i]) correct++;
+    });
 
-  // Reset
-  const resetTest = (newMode) => {
-    const selectedMode = newMode || mode;
-    setMode(selectedMode);
-    setUserInput("");
+    setAccuracy(
+      Math.round((correct / targetChars.length) * 100) || 0
+    );
+  }, [inputChars, targetChars]);
+
+  const reset = (newMode) => {
+    const m = newMode || mode;
+    setMode(m);
+    setInput("");
     setStartTime(null);
     setWpm(0);
     setAccuracy(100);
 
-    const newData =
-      selectedMode === "english"
+    const newLessons =
+      m === "english"
         ? typingLessons.english
         : typingLessons.myanmar;
 
-    setLessonIndex(Math.floor(Math.random() * newData.length));
+    setLessonIndex(Math.floor(Math.random() * newLessons.length));
+
+    inputRef.current.focus();
   };
 
-  // Progress
-  const progress = (userInput.length / targetText.length) * 100;
+  const progress = (inputChars.length / targetChars.length) * 100;
 
-  // Score
   const score = Math.round(wpm * (accuracy / 100));
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0b0f1a] text-white px-4">
+
       {/* Mode Switch */}
-      <div className="flex gap-4 mb-8 justify-center font-pyidaungsu">
+      <div className="flex gap-4 mb-10">
         <button
-          onClick={() => resetTest("english")}
-          className={`px-8 py-2 rounded-full font-bold transition-all ${
+          onClick={() => reset("english")}
+          className={`px-6 py-2 rounded-full ${
             mode === "english"
-              ? "bg-blue-600 text-white shadow-lg"
-              : "bg-slate-800 text-slate-400"
+              ? "bg-white text-black"
+              : "text-gray-500"
           }`}
         >
-          English
+          EN
         </button>
         <button
-          onClick={() => resetTest("myanmar")}
-          className={`px-8 py-2 rounded-full font-bold transition-all ${
+          onClick={() => reset("myanmar")}
+          className={`px-6 py-2 rounded-full ${
             mode === "myanmar"
-              ? "bg-emerald-600 text-white shadow-lg"
-              : "bg-slate-800 text-slate-400"
+              ? "bg-white text-black"
+              : "text-gray-500"
           }`}
         >
-          မြန်မာစာ
+          MM
         </button>
       </div>
 
-      {/* Main Box */}
-      <div className="bg-[#0f172a] p-10 rounded-3xl border border-white/10 shadow-2xl">
+      {/* Text Area */}
+      <div className="text-3xl leading-relaxed max-w-3xl text-center font-mono relative">
 
-        {/* Target Text */}
-        <div className="mb-6 p-6 bg-slate-900/50 rounded-2xl text-2xl text-center flex flex-wrap justify-center gap-x-1 min-h-[140px]">
-          {targetText.split("").map((char, index) => {
-            let style = "text-slate-600";
+        {targetChars.map((char, i) => {
+          let className = "text-gray-600";
 
-            if (index < userInput.length) {
-              style =
-                userInput[index] === char
-                  ? "text-white"
-                  : "text-red-500 bg-red-500/10 rounded";
-            } else if (index === userInput.length) {
-              style = "bg-yellow-400 text-black rounded px-1";
-            }
-
-            return (
-              <span key={index} className={`${style} transition-all`}>
-                {char}
-              </span>
-            );
-          })}
-        </div>
-
-        {/* Progress Bar */}
-        <div className="w-full bg-slate-800 h-2 rounded-full mb-6">
-          <div
-            className="bg-blue-500 h-2 rounded-full transition-all"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-
-        {/* Input */}
-        <textarea
-          className="w-full bg-transparent border-b-2 border-white/10 p-4 focus:outline-none focus:border-blue-500 text-2xl text-white text-center h-24 resize-none"
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          placeholder={
-            mode === "english"
-              ? "type the text above..."
-              : "အပေါ်ကစာသားအတိုင်း ရိုက်ပါ..."
+          if (i < inputChars.length) {
+            className =
+              inputChars[i] === char
+                ? "text-white"
+                : "text-red-500";
           }
-          spellCheck="false"
-          autoFocus
-          onPaste={(e) => e.preventDefault()}
+
+          if (i === inputChars.length) {
+            className = "border-b-2 border-yellow-400 animate-pulse";
+          }
+
+          return (
+            <span key={i} className={className}>
+              {char}
+            </span>
+          );
+        })}
+      </div>
+
+      {/* Hidden Input */}
+      <textarea
+        ref={inputRef}
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        className="opacity-0 absolute"
+        autoFocus
+        onPaste={(e) => e.preventDefault()}
+      />
+
+      {/* Progress */}
+      <div className="w-full max-w-xl mt-8 h-[2px] bg-gray-800">
+        <div
+          className="h-[2px] bg-white transition-all"
+          style={{ width: `${progress}%` }}
         />
+      </div>
 
-        {/* Stats */}
-        <div className="mt-8 flex justify-between items-center text-sm font-mono">
-          <div className="text-slate-400">
-            WPM: <span className="text-blue-400">{wpm}</span> | Accuracy:{" "}
-            <span className="text-emerald-400">{accuracy}%</span> | Score:{" "}
-            <span className="text-yellow-400">{score}</span>
-          </div>
-
-          {userInput === targetText && (
-            <button
-              onClick={() => resetTest()}
-              className="bg-white text-black px-6 py-2 rounded-lg font-bold hover:bg-blue-400 hover:text-white transition-all"
-            >
-              NEXT
-            </button>
-          )}
+      {/* Stats */}
+      <div className="flex gap-10 mt-10 text-gray-400 text-sm">
+        <div>
+          WPM <br />
+          <span className="text-white text-xl">{wpm}</span>
         </div>
-
-        {/* Keyboard Guide */}
-        <div className="mt-10 opacity-40 hover:opacity-100 transition">
-          <img
-            src={
-              mode === "english"
-                ? "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Qwerty.svg/1200px-Qwerty.svg.png"
-                : "https://www.mmsit.com/wp-content/uploads/2020/05/keyboard-layout.png"
-            }
-            className="w-full max-w-2xl mx-auto rounded-lg grayscale hover:grayscale-0 transition"
-          />
+        <div>
+          ACC <br />
+          <span className="text-white text-xl">{accuracy}%</span>
+        </div>
+        <div>
+          SCORE <br />
+          <span className="text-white text-xl">{score}</span>
         </div>
       </div>
+
+      {/* Finish */}
+      {input === text && (
+        <button
+          onClick={() => reset()}
+          className="mt-10 px-6 py-2 bg-white text-black rounded-full"
+        >
+          NEXT
+        </button>
+      )}
     </div>
   );
 }
