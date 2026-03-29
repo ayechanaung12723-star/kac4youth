@@ -1,12 +1,20 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 
-export default function TypingInput({ targetText, mode, onComplete, setStats }) {
+export default function TypingInput({ targetText, mode, onComplete, setStats, onInputChange }) {
   const [input, setInput] = useState("");
   const [startTime, setStartTime] = useState(null);
   const inputRef = useRef();
 
+  // Audio References
+  const typeSound = useRef(null);
+  const errorSound = useRef(null);
+
   useEffect(() => {
+    // Client-side မှာပဲ Audio ကို တည်ဆောက်မယ်
+    typeSound.current = new Audio("/sounds/type.mp3");
+    errorSound.current = new Audio("/sounds/error.mp3");
+    
     setInput("");
     setStartTime(null);
     inputRef.current?.focus();
@@ -14,24 +22,45 @@ export default function TypingInput({ targetText, mode, onComplete, setStats }) 
 
   const handleChange = (e) => {
     const value = e.target.value;
-    if (!startTime) setStartTime(Date.now());
-    setInput(value);
+    const lastChar = value[value.length - 1];
+    const targetChar = targetText[value.length - 1];
 
-    // Accuracy
+    if (!startTime) setStartTime(Date.now());
+
+    // Sound Logic
+    if (value.length > input.length) { // စာရိုက်လိုက်လျှင် (Backspacing မဟုတ်လျှင်)
+      if (lastChar === targetChar) {
+        if (typeSound.current) {
+          typeSound.current.currentTime = 0;
+          typeSound.current.play();
+        }
+      } else {
+        if (errorSound.current) {
+          errorSound.current.currentTime = 0;
+          errorSound.current.play();
+        }
+      }
+    }
+
+    setInput(value);
+    onInputChange(value); // Display ကို စာပို့ပေးမယ်
+
+    // Stats Calculation
     let correctChars = 0;
     for (let i = 0; i < value.length; i++) {
       if (value[i] === targetText[i]) correctChars++;
     }
     const accuracy = value.length > 0 ? Math.round((correctChars / value.length) * 100) : 100;
-
-    // Speed (WPM)
     const timeElapsed = (Date.now() - (startTime || Date.now())) / 60000;
     const wpm = timeElapsed > 0 ? Math.round((value.length / 5) / timeElapsed) : 0;
 
     setStats({ wpm, accuracy });
 
     if (value === targetText) {
-      setTimeout(onComplete, 300);
+      setTimeout(() => {
+        onComplete();
+        onInputChange(""); // reset display highlight
+      }, 300);
     }
   };
 
@@ -40,11 +69,10 @@ export default function TypingInput({ targetText, mode, onComplete, setStats }) 
       ref={inputRef}
       type="text"
       spellCheck="false"
-      autoComplete="off"
-      className={`w-full max-w-2xl p-5 rounded-2xl bg-white/5 border border-white/10 text-white text-xl focus:border-blue-500 outline-none transition-all text-center ${mode === 'myanmar' ? 'font-myanmar' : ''}`}
-      placeholder={mode === "english" ? "Type the text above..." : "အပေါ်ကစာသားအတိုင်း ရိုက်ပေးပါ..."}
+      className="opacity-0 absolute" // Input ကို ဖျောက်ထားပြီး Background မှာပဲ အလုပ်လုပ်မယ်
       value={input}
       onChange={handleChange}
+      autoFocus
     />
   );
 }
