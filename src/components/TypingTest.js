@@ -3,22 +3,24 @@ import { useState, useEffect } from 'react';
 import { typingLessons } from '../data/typingContent';
 
 export default function TypingTest() {
-  const [mode, setMode] = useState('english'); // 'english' or 'myanmar'
+  const [mode, setMode] = useState('english');
   const [lessonIndex, setLessonIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [startTime, setStartTime] = useState(null);
   const [wpm, setWpm] = useState(0);
 
-  const targetText = typingLessons.myanmar[lessonIndex];
+  // Lesson data ကို ဘာသာစကားအလိုက် ယူခြင်း
+  const lessonData = mode === 'english' ? typingLessons.english : typingLessons.myanmar;
+  const targetText = lessonData[lessonIndex];
 
   useEffect(() => {
     if (userInput.length === 1 && !startTime) {
       setStartTime(Date.now());
     }
-    if (userInput === targetText && mode === 'myanmar') {
+    if (userInput === targetText) {
       calculateWPM();
     }
-  }, [userInput, targetText, startTime, mode]);
+  }, [userInput, targetText]);
 
   const calculateWPM = () => {
     const timeElapsed = (Date.now() - startTime) / 60000;
@@ -26,81 +28,78 @@ export default function TypingTest() {
     setWpm(Math.round(words / timeElapsed));
   };
 
-  const resetMyanmarTest = () => {
+  const resetTest = (newMode) => {
+    setMode(newMode);
     setUserInput("");
     setStartTime(null);
     setWpm(0);
-    setLessonIndex(Math.floor(Math.random() * typingLessons.myanmar.length));
+    const newData = newMode === 'english' ? typingLessons.english : typingLessons.myanmar;
+    setLessonIndex(Math.floor(Math.random() * newData.length));
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-4 mt-5">
+    <div className="max-w-4xl mx-auto p-4">
       {/* Mode Selection */}
       <div className="flex gap-4 mb-8 justify-center">
         <button 
-          onClick={() => setMode('english')} 
-          className={`px-8 py-2 rounded-full font-bold transition-all ${mode === 'english' ? 'bg-yellow-500 text-black shadow-lg shadow-yellow-500/20' : 'bg-slate-800 text-slate-400'}`}
+          onClick={() => resetTest('english')} 
+          className={`px-8 py-2 rounded-full font-bold transition-all ${mode === 'english' ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-800 text-slate-400'}`}
         >
-          English (Monkeytype)
+          English Practice
         </button>
         <button 
-          onClick={() => setMode('myanmar')} 
-          className={`px-8 py-2 rounded-full font-bold transition-all ${mode === 'myanmar' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/30' : 'bg-slate-800 text-slate-400'}`}
+          onClick={() => resetTest('myanmar')} 
+          className={`px-8 py-2 rounded-full font-bold transition-all ${mode === 'myanmar' ? 'bg-emerald-600 text-white shadow-lg' : 'bg-slate-800 text-slate-400'}`}
         >
           မြန်မာစာ လေ့ကျင့်ရန်
         </button>
       </div>
 
-      {/* English Mode: Monkeytype Iframe */}
-      {mode === 'english' && (
-        <div className="w-full h-[600px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-          <iframe 
-            src="https://monkeytype.com" 
-            className="w-full h-full"
-            title="Monkeytype"
-          ></iframe>
+      <div className="bg-[#0f172a] p-8 rounded-2xl border border-white/10 shadow-2xl">
+        {/* စာသားပြသသည့် နေရာ (မြန်မာစာလုံးပေါင်း မလွဲအောင် ရှင်းရှင်းလင်းလင်း ပြထားပါတယ်) */}
+        <div className="mb-8 p-6 bg-slate-900 rounded-xl border border-white/5 text-2xl leading-relaxed text-white text-center min-h-[120px] flex items-center justify-center select-none font-pyidaungsu">
+          {targetText}
         </div>
-      )}
 
-      {/* Myanmar Mode: Custom Typing Tool */}
-      {mode === 'myanmar' && (
-        <div className="max-w-3xl mx-auto bg-[#0f172a] p-8 rounded-2xl border border-white/10 shadow-2xl">
-          <div className="mb-6 p-6 bg-slate-900 rounded-xl border border-white/5 text-2xl leading-relaxed text-white text-center min-h-[100px] flex items-center justify-center">
-            {targetText}
+        {/* Input Area */}
+        <textarea
+          className="w-full bg-slate-950 border-2 border-white/10 p-5 rounded-xl focus:border-blue-500 outline-none text-xl text-white text-center transition-all h-32"
+          value={userInput}
+          onChange={(e) => setUserInput(e.target.value)}
+          placeholder={mode === 'english' ? "Start typing above text..." : "အပေါ်ကစာသားအတိုင်း ရိုက်နှိပ်ပါ..."}
+          spellCheck="false"
+          autoFocus
+        />
+
+        {/* Result & Progress */}
+        <div className="mt-6 flex justify-between items-center px-4">
+          <div className="text-slate-400">
+            Progress: <span className="text-white font-bold">{Math.round((userInput.length / targetText.length) * 100)}%</span>
           </div>
-
-          <textarea
-            className="w-full bg-slate-950 border-2 border-white/10 p-5 rounded-xl focus:border-emerald-500 outline-none text-xl text-white text-center transition-all"
-            rows="3"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            placeholder="အပေါ်ကစာသားအတိုင်း ရိုက်နှိပ်ပါ..."
-            spellCheck="false"
-          />
-
           {userInput === targetText && (
-            <div className="mt-6 text-center animate-in zoom-in duration-300">
-              <p className="text-2xl font-bold text-emerald-400">အောင်မြင်ပါတယ်! 🎉</p>
-              <p className="text-slate-400 mt-2">Speed: {wpm} WPM</p>
-              <button onClick={resetMyanmarTest} className="mt-4 bg-emerald-600 text-white px-8 py-2 rounded-full hover:bg-emerald-500 transition-colors">
-                နောက်တစ်ခု လေ့ကျင့်မယ်
-              </button>
+            <div className="flex items-center gap-4 animate-in zoom-in duration-300">
+              <span className="text-emerald-400 font-bold text-xl">Speed: {wpm} WPM 🎉</span>
+              <button onClick={() => resetTest(mode)} className="bg-white text-black px-6 py-1.5 rounded-full font-bold hover:bg-gray-200">Next</button>
             </div>
           )}
+        </div>
 
-          {/* Myanmar Keyboard Layout Image */}
-          <div className="mt-10 pt-10 border-t border-white/10">
-            <p className="text-slate-500 text-sm mb-4 text-center italic">မြန်မာယူနီကုဒ် လက်ကွက်လမ်းညွှန်</p>
-            <div className="rounded-xl overflow-hidden border border-white/10">
-              <img 
-                src="https://www.mmsit.com/wp-content/uploads/2020/05/keyboard-layout.png" 
-                alt="Myanmar Unicode Keyboard Layout" 
-                className="w-full opacity-70 hover:opacity-100 transition-opacity"
-              />
-            </div>
+        {/* Keyboard Image (Keyboard Layout) */}
+        <div className="mt-10 pt-8 border-t border-white/10">
+          <p className="text-slate-500 text-sm mb-4 text-center italic">
+            {mode === 'english' ? 'QWERTY Layout' : 'မြန်မာယူနီကုဒ် လက်ကွက်လမ်းညွှန်'}
+          </p>
+          <div className="rounded-xl overflow-hidden border border-white/10 bg-slate-900 p-2">
+            <img 
+              src={mode === 'english' 
+                ? "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Qwerty.svg/1200px-Qwerty.svg.png" 
+                : "https://www.mmsit.com/wp-content/uploads/2020/05/keyboard-layout.png"} 
+              alt="Keyboard Layout" 
+              className="w-full opacity-80 hover:opacity-100 transition-opacity"
+            />
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
