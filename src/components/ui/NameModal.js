@@ -1,19 +1,28 @@
 "use client";
+import React, { useState } from "react";
+
 export default function NameModal({ username, setUsername, onStart }) {
+  const [localName, setLocalName] = useState(username || "");
+
+  const handleStart = () => {
+    if (!localName.trim()) return;
+    setUsername(localName.trim());
+    onStart(localName.trim());
+  };
+
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-      <div className="bg-gray-900 p-6 rounded-xl w-[300px] text-center">
-        <h2 className="mb-4">Enter Name</h2>
-
+    <div className="fixed inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center z-50">
+      <div className="bg-gray-900 p-8 rounded-md w-80 text-center">
+        <h2 className="text-white text-xl mb-4">Enter your name</h2>
         <input
-          className="w-full p-2 text-black rounded"
-          value={username}
-          onChange={(e)=>setUsername(e.target.value)}
+          value={localName}
+          onChange={(e) => setLocalName(e.target.value)}
+          className="w-full px-3 py-2 rounded bg-gray-800 text-white mb-4 focus:outline-none"
+          autoFocus
         />
-
         <button
-          className="mt-4 w-full bg-white text-black p-2 rounded"
-          onClick={onStart}
+          onClick={handleStart}
+          className="px-6 py-2 bg-white text-black rounded hover:bg-gray-200"
         >
           Start
         </button>
