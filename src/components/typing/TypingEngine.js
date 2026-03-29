@@ -16,7 +16,7 @@ export default function TypingEngine() {
   const [stats, setStats] = useState({ wpm: 0, accuracy: 100 });
   const [userInput, setUserInput] = useState(""); // Highlight ပြရန်အတွက် User ရိုက်သမျှစာကို သိမ်းဆည်းရန်
 
-  // Local Storage မှ နာမည်ကို စစ်ဆေးခြင်း
+
   useEffect(() => {
     const storedName = localStorage.getItem("username");
     if (storedName) {
@@ -25,13 +25,13 @@ export default function TypingEngine() {
     }
   }, []);
 
-  // သင်ခန်းစာအသစ်ပြောင်းလျှင် ရိုက်ထားသမျှကို Reset လုပ်ခြင်း
+
   const handleNextLesson = () => {
-    setUserInput(""); // Display highlighting ကို reset လုပ်ရန်
+    setUserInput(""); // Display highlighting
     if (lessonIndex < typingLessons[mode].length - 1) {
       setLessonIndex(prev => prev + 1);
     } else {
-      setLessonIndex(0); // သင်ခန်းစာ ၅၀ လုံးပြီးသွားရင် အစကပြန်စရန်
+      setLessonIndex(0); //
     }
   };
 
@@ -41,7 +41,7 @@ export default function TypingEngine() {
     setShowNameModal(false);
   };
 
-  // Language ပြောင်းလျှင် အကုန် Reset လုပ်ခြင်း
+
   const handleModeChange = (newMode) => {
     setMode(newMode);
     setLessonIndex(0);
@@ -77,7 +77,7 @@ export default function TypingEngine() {
             <p className="text-gray-500 text-[10px] mb-3 uppercase tracking-[0.2em] text-center font-bold">
               Select Lesson
             </p>
-            <div className="flex flex-wrap justify-center gap-2 max-h-32 overflow-y-auto p-4 bg-slate-900/40 rounded-2xl border border-white/5 scrollbar-hide">
+            <div className="grid grid-cols-5 md:grid-cols-10 gap-2 p-4 bg-slate-900/40 rounded-2xl border border-white/5">
               {typingLessons[mode].map((_, idx) => (
                 <button
                   key={idx}
