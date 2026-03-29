@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { typingLessons } from "../../data/typingData"; 
 import NameModal from "../ui/NameModal";
 import Leaderboard from "../leaderboard/Leaderboard";
 import StatsBar from "../stats/StatsBar";
 import TypingDisplay from "./TypingDisplay";
 import TypingInput from "./TypingInput";
-import { typingData } from "../../data/typingData";
 
 export default function TypingEngine() {
   const [mode, setMode] = useState("english");
@@ -24,7 +24,7 @@ export default function TypingEngine() {
   }, []);
 
   const handleNextLesson = () => {
-    const nextIdx = (lessonIndex + 1) % typingData[mode].length;
+    const nextIdx = (lessonIndex + 1) % typingLessons[mode].length;
     setLessonIndex(nextIdx);
   };
 
@@ -62,7 +62,7 @@ export default function TypingEngine() {
           />
 
           <TypingInput 
-            targetText={typingData[mode][lessonIndex]}
+            targetText={typingLessons[mode][lessonIndex]}
             mode={mode}
             onComplete={handleNextLesson}
             setStats={setStats}
