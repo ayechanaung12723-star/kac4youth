@@ -1,28 +1,71 @@
-// src/data/typingData.js
-
 export const typingLessons = {
-  english: Array.from({ length: 50 }, (_, i) => {
-    const texts = [
-      "The quick brown fox jumps over the lazy dog.",
-      "Practice makes perfect in every typing journey.",
-      "Next.js is a powerful framework for modern web.",
-      "Consistency is the key to mastering any skill.",
-      "Success is a journey, not a destination."
-    ];
-    // စာသား ၅၀ ပြည့်အောင် ပတ်ပြီး ထည့်ပေးထားခြင်း
-    return `Lesson ${i + 1}: ${texts[i % texts.length]}`;
-  }),
-  
-  myanmar: Array.from({ length: 50 }, (_, i) => {
-    const texts = [
-      "မင်္ဂလာပါ၊ မြန်မာစာရိုက်လေ့ကျင့်ခန်းမှ ကြိုဆိုပါသည်။",
-      "မြန်မာစာသည် ကျွန်ုပ်တို့၏ မိခင်ဘာသာစကား ဖြစ်ပါသည်။",
-      "နည်းပညာသည် လူသားတို့၏ ဘဝကို ပိုမိုကောင်းမွန်စေပါသည်။",
-      "ကြိုးစားအားထုတ်မှုသည် အောင်မြင်ခြင်း၏ သော့ချက်ဖြစ်ပါသည်။",
-      "မြန်မာလက်ကွက်ကို ကျွမ်းကျင်စွာ ရိုက်နိုင်အောင် လေ့ကျင့်ပါ။"
-    ];
-    return `သင်ခန်းစာ ${i + 1}: ${texts[i % texts.length]}`;
-  })
+  english: [
+    "The quick brown fox jumps over the lazy dog.",
+    "Practice makes perfect in every typing journey.",
+    "Next.js is a powerful framework for modern web.",
+    "Consistency is the key to mastering any skill.",
+    "Success is a journey, not a destination.",
+    "Life is what happens when you are making other plans.",
+    "The way to get started is to quit talking and begin doing.",
+    "Your time is limited, so do not waste it living someone else life.",
+    "If life were predictable it would cease to be life.",
+    "If you look at what you have in life, you will always have more.",
+    "If you set your goals ridiculously high and it is a failure.",
+    "Spread love everywhere you go. Let no one ever come to you.",
+    "Don't judge each day by the harvest you reap but by the seeds.",
+    "The future belongs to those who believe in the beauty of their dreams.",
+    "Tell me and I forget. Teach me and I remember. Involve me and I learn.",
+    "The best and most beautiful things in the world cannot be seen.",
+    "It is during our darkest moments that we must focus to see the light.",
+    "Whoever is happy will make others happy too.",
+    "Do not go where the path may lead, go instead where there is no path.",
+    "Knowledge is power. Information is liberating. Education is the premise.",
+    "Success is not final; failure is not fatal: It is the courage to continue.",
+    "Believe you can and you are halfway there.",
+    "I can’t change the direction of the wind, but I can adjust my sails.",
+    "Move fast and break things. Unless you are breaking stuff.",
+    "Design is not just what it looks like and feels like.",
+    "Innovation distinguishes between a leader and a follower.",
+    "Stay hungry, stay foolish.",
+    "The only way to do great work is to love what you do.",
+    "Be yourself; everyone else is already taken.",
+    "Simplicity is the ultimate sophistication."
+  ],
+  myanmar: [
+    "မင်္ဂလာပါ၊ မြန်မာစာရိုက်လေ့ကျင့်ခန်းမှ ကြိုဆိုပါသည်။",
+    "မြန်မာစာသည် ကျွန်ုပ်တို့၏ မိခင်ဘာသာစကား ဖြစ်ပါသည်။",
+    "နည်းပညာသည် လူသားတို့၏ ဘဝကို ပိုမိုကောင်းမွန်စေပါသည်။",
+    "ကြိုးစားအားထုတ်မှုသည် အောင်မြင်ခြင်း၏ သော့ချက်ဖြစ်ပါသည်။",
+    "မြန်မာလက်ကွက်ကို ကျွမ်းကျင်စွာ ရိုက်နိုင်အောင် လေ့ကျင့်ပါ။",
+    "ဗဟုသုတ ရှာမှီးခြင်းသည် လူသားတို့၏ တာဝန်ဖြစ်ပါသည်။",
+    "ကျန်းမာခြင်းသည် လာဘ်တစ်ပါး ဖြစ်ပါသည်။",
+    "အချိန်ကို အကျိုးရှိစွာ အသုံးချတတ်ပါစေ။",
+    "စာဖတ်ခြင်းသည် အသိအမြင်ကို ကြွယ်ဝစေပါသည်။",
+    "မိမိကိုယ်ကို ယုံကြည်မှုရှိခြင်းသည် အောင်မြင်မှု၏ အစဖြစ်သည်။",
+    "ယဉ်ကျေးမှုသည် လူမျိုးတစ်မျိုး၏ ဂုဏ်သိက္ခာ ဖြစ်သည်။",
+    "စည်းလုံးခြင်းသည် အင်အား ဖြစ်ပါသည်။",
+    "သည်းခံခြင်းသည် မြတ်သော အကျင့်ဖြစ်ပါသည်။",
+    "ပညာရွှေအိုး လူမခိုးနိုင်ပါ။",
+    "အနာဂတ်သည် ယနေ့ ကြိုးစားသူများအတွက် ဖြစ်သည်။",
+    "စကားနည်းလျှင် အမှားနည်းပါသည်။",
+    "အလှအပထက် အသိပညာက ပို၍ တန်ဖိုးရှိသည်။",
+    "လူတိုင်းတွင် တူညီသော အချိန် ၂၄ နာရီ ရှိသည်။",
+    "အမှားမှ သင်ခန်းစာယူတတ်ရန် လိုအပ်ပါသည်။",
+    "မဖြစ်နိုင်တာ ဘာမှမရှိဟု ယုံကြည်ပါ။",
+    "စိတ်ထားကောင်းလျှင် အရာရာ ကောင်းမွန်ပါလိမ့်မည်။",
+    "ကူညီတတ်သော စိတ်ထားသည် မွန်မြတ်ပါသည်။",
+    "ခွင့်လွှတ်တတ်ခြင်းသည် ကြီးမြတ်သော စိတ်ထားဖြစ်သည်။",
+    "စနစ်တကျ အလုပ်လုပ်ခြင်းသည် အောင်မြင်မှုကို မြန်ဆန်စေသည်။",
+    "သင်ယူခြင်းသည် ဘယ်သောအခါမှ မဆုံးပါ။",
+    "ကိုယ့်ကိုယ်ကိုယ် အမြဲတမ်း Update ဖြစ်နေပါစေ။",
+    "စိတ်ရှည်စွာ လေ့ကျင့်ခြင်းဖြင့် ကျွမ်းကျင်မှုကို ရယူပါ။",
+    "အကောင်းမြင်စိတ်သည် ဘဝကို ပျော်ရွှင်စေသည်။",
+    "ကျေးဇူးသိတတ်ခြင်းသည် မင်္ဂလာတစ်ပါးဖြစ်သည်။",
+    "ယနေ့လုပ်ဆောင်ချက်သည် မနက်ဖြန်၏ ရလဒ်ဖြစ်သည်။"
+  ]
 };
 
-export const randomNames = ["Aung Paing", "Kyaw Thet", "Wai Lin Aung", "Su Lay", "Hein Htet Aung"];
+export const randomNames = [
+  "Aung Paing", "Kyaw Thet", "Wai Lin Aung", "Su Lay", "Hein Htet Aung", 
+  "May Thazin", "Ko John", "Nandar", "Hnin Ei Ei", "Zaw Win"
+];
