@@ -1,25 +1,32 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import EnglishTyping from "./EnglishTyping";
-import MyanmarTyping from "./MyanmarTyping";
 import NameModal from "../ui/NameModal";
 import Leaderboard from "../leaderboard/Leaderboard";
+import StatsBar from "../stats/StatsBar";
+import TypingDisplay from "./TypingDisplay";
+import TypingInput from "./TypingInput";
+import { typingData } from "../../data/typingData";
 
 export default function TypingEngine() {
   const [mode, setMode] = useState("english");
+  const [lessonIndex, setLessonIndex] = useState(0);
   const [username, setUsername] = useState("");
   const [showNameModal, setShowNameModal] = useState(true);
+  const [stats, setStats] = useState({ wpm: 0, accuracy: 100 });
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedName = localStorage.getItem("username");
-      if (storedName) {
-        setUsername(storedName);
-        setShowNameModal(false);
-      }
+    const storedName = localStorage.getItem("username");
+    if (storedName) {
+      setUsername(storedName);
+      setShowNameModal(false);
     }
   }, []);
+
+  const handleNextLesson = () => {
+    const nextIdx = (lessonIndex + 1) % typingData[mode].length;
+    setLessonIndex(nextIdx);
+  };
 
   const handleSetName = (name) => {
     setUsername(name);
@@ -28,27 +35,38 @@ export default function TypingEngine() {
   };
 
   return (
-    <div className="w-full max-w-4xl px-4">
+    <div className="w-full max-w-4xl px-4 flex flex-col items-center">
       {showNameModal && <NameModal onSubmit={handleSetName} />}
 
       {!showNameModal && (
         <>
-          <div className="flex gap-4 mb-6 justify-center">
-            <button
-              className={`px-6 py-2 rounded-full ${mode === "english" ? "bg-white text-black" : "text-gray-400"}`}
-              onClick={() => setMode("english")}
-            >
-              EN
-            </button>
-            <button
-              className={`px-6 py-2 rounded-full ${mode === "myanmar" ? "bg-white text-black" : "text-gray-400"}`}
-              onClick={() => setMode("myanmar")}
-            >
-              MM
-            </button>
+          <div className="flex gap-4 mb-8 justify-center">
+            {["english", "myanmar"].map((l) => (
+              <button
+                key={l}
+                className={`px-8 py-2 rounded-full font-bold transition-all ${
+                  mode === l ? "bg-white text-black scale-110" : "bg-white/10 text-gray-400 hover:bg-white/20"
+                }`}
+                onClick={() => { setMode(l); setLessonIndex(0); }}
+              >
+                {l.toUpperCase()}
+              </button>
+            ))}
           </div>
 
-          {mode === "english" ? <EnglishTyping username={username} /> : <MyanmarTyping username={username} />}
+          <StatsBar stats={stats} />
+          
+          <TypingDisplay 
+            text={typingData[mode][lessonIndex]} 
+            mode={mode}
+          />
+
+          <TypingInput 
+            targetText={typingData[mode][lessonIndex]}
+            mode={mode}
+            onComplete={handleNextLesson}
+            setStats={setStats}
+          />
 
           <Leaderboard />
         </>

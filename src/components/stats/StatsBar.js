@@ -1,15 +1,16 @@
 "use client";
-import React from "react";
 
-export default function StatsBar() {
-  // Placeholder stats
-  const wpm = Math.floor(Math.random() * 80 + 20);
-  const accuracy = Math.floor(Math.random() * 20 + 80);
-
+export default function StatsBar({ stats }) {
   return (
-    <div className="w-full max-w-2xl flex justify-between bg-gray-900 p-3 rounded mb-4">
-      <span>WPM: {wpm}</span>
-      <span>Accuracy: {accuracy}%</span>
+    <div className="w-full max-w-2xl flex justify-around bg-slate-800/40 p-4 rounded-2xl mb-6 border border-white/5 backdrop-blur-sm">
+      <div className="text-center">
+        <p className="text-gray-400 text-xs uppercase tracking-widest">Speed</p>
+        <p className="text-2xl font-black text-blue-400">{stats.wpm} <span className="text-sm font-normal text-gray-500">WPM</span></p>
+      </div>
+      <div className="text-center">
+        <p className="text-gray-400 text-xs uppercase tracking-widest">Accuracy</p>
+        <p className="text-2xl font-black text-green-400">{stats.accuracy}<span className="text-sm font-normal text-gray-500">%</span></p>
+      </div>
     </div>
   );
 }
