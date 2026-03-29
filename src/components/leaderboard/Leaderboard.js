@@ -1,18 +1,30 @@
 "use client";
-import React from "react";
 
-export default function Leaderboard({ topScores }) {
+import { useState, useEffect } from "react";
+
+export default function Leaderboard() {
+  const [topScores, setTopScores] = useState([]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = JSON.parse(localStorage.getItem("kac_top_scores") || "[]");
+      const uniqueUsers = Array.from(new Map(saved.map((s) => [s.username, s])).values());
+      setTopScores(uniqueUsers.slice(0, 10));
+    }
+  }, []);
+
   return (
-    <div className="w-full max-w-2xl bg-gray-800 rounded p-4 text-white">
-      <h3 className="text-lg mb-2">Top 10 Leaderboard</h3>
-      <ol className="list-decimal ml-4 space-y-1">
-        {topScores.map((user, idx) => (
-          <li key={idx} className="flex justify-between">
-            <span>{user.username}</span>
-            <span>{user.score} pts | WPM: {user.wpm} | Acc: {user.accuracy}%</span>
-          </li>
-        ))}
-      </ol>
+    <div className="mt-10 w-full max-w-xl mx-auto">
+      <h2 className="text-center text-lg text-gray-400 mb-4">🏆 Top 10</h2>
+      {topScores.map((s, i) => (
+        <div key={i} className="flex justify-between bg-slate-800 p-2 rounded mb-2">
+          <span>#{i + 1}</span>
+          <span>{s.username}</span>
+          <span>{s.wpm} WPM</span>
+          <span>{s.accuracy}%</span>
+          <span className="text-yellow-400">{s.score}</span>
+        </div>
+      ))}
     </div>
   );
 }

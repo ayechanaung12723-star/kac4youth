@@ -1,21 +1,24 @@
 "use client";
-import React from "react";
 
-export default function NameModal({ username, setUsername, onStart }) {
+import { useState } from "react";
+
+export default function NameModal({ onSubmit }) {
+  const [name, setName] = useState("");
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center z-50">
-      <div className="bg-[#0b0f1a] p-6 rounded-xl text-white w-80 flex flex-col items-center">
-        <h2 className="text-xl mb-4">Enter Your Name</h2>
+    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+      <div className="bg-[#1a1f2e] p-8 rounded-xl w-80 flex flex-col gap-4">
+        <h2 className="text-white text-xl text-center">Enter Your Name</h2>
         <input
           type="text"
-          className="p-2 rounded w-full text-black"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          autoFocus
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Your Name"
+          className="p-2 rounded bg-gray-800 text-white"
         />
         <button
-          onClick={() => username.trim() && onStart(username.trim())}
-          className="mt-4 px-6 py-2 bg-white text-black rounded-full"
+          onClick={() => name.trim() && onSubmit(name)}
+          className="bg-white text-black py-2 rounded mt-2"
         >
           Start
         </button>
