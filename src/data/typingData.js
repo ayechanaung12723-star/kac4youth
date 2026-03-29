@@ -1,4 +1,3 @@
-// သင်ခန်းစာ စာသားများ
 export const typingLessons = {
   english: [
     "The quick brown fox jumps over the lazy dog.",
@@ -16,7 +15,6 @@ export const typingLessons = {
   ]
 };
 
-// Leaderboard အတွက် နာမည်အတုများ (Default Data အတွက်)
 export const randomNames = [
   "Aung Paing", "Kyaw Thet", "Wai Lin Aung", "Su Lay", "Hein Htet Aung", 
   "May Thazin", "Ko John", "Nandar", "Hnin Ei Ei", "Zaw Win"

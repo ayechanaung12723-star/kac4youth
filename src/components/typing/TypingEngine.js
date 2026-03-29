@@ -45,7 +45,7 @@ export default function TypingEngine() {
               <button
                 key={l}
                 className={`px-8 py-2 rounded-full font-bold transition-all ${
-                  mode === l ? "bg-white text-black scale-110" : "bg-white/10 text-gray-400 hover:bg-white/20"
+                  mode === l ? "bg-white text-black scale-105 shadow-lg shadow-white/10" : "bg-white/5 text-gray-400 hover:bg-white/10"
                 }`}
                 onClick={() => { setMode(l); setLessonIndex(0); }}
               >
@@ -56,10 +56,7 @@ export default function TypingEngine() {
 
           <StatsBar stats={stats} />
           
-          <TypingDisplay 
-            text={typingData[mode][lessonIndex]} 
-            mode={mode}
-          />
+          <TypingDisplay mode={mode} lessonIndex={lessonIndex} />
 
           <TypingInput 
             targetText={typingLessons[mode][lessonIndex]}

@@ -15,24 +15,23 @@ export default function TypingInput({ targetText, mode, onComplete, setStats }) 
   const handleChange = (e) => {
     const value = e.target.value;
     if (!startTime) setStartTime(Date.now());
-
     setInput(value);
 
-    // Accuracy Calculation
+    // Accuracy
     let correctChars = 0;
     for (let i = 0; i < value.length; i++) {
       if (value[i] === targetText[i]) correctChars++;
     }
     const accuracy = value.length > 0 ? Math.round((correctChars / value.length) * 100) : 100;
 
-    // WPM Calculation
-    const timeElapsed = (Date.now() - startTime) / 60000; // in minutes
+    // Speed (WPM)
+    const timeElapsed = (Date.now() - (startTime || Date.now())) / 60000;
     const wpm = timeElapsed > 0 ? Math.round((value.length / 5) / timeElapsed) : 0;
 
     setStats({ wpm, accuracy });
 
     if (value === targetText) {
-      setTimeout(onComplete, 500);
+      setTimeout(onComplete, 300);
     }
   };
 
@@ -40,8 +39,10 @@ export default function TypingInput({ targetText, mode, onComplete, setStats }) 
     <input
       ref={inputRef}
       type="text"
-      className={`w-full max-w-2xl p-5 rounded-2xl bg-white/5 border border-white/20 text-white text-xl focus:border-blue-500 outline-none transition-all text-center ${mode === 'myanmar' ? 'font-myanmar' : ''}`}
-      placeholder={mode === "english" ? "Start typing..." : "စာရိုက်လေ့ကျင့်ခန်း စတင်ပါ..."}
+      spellCheck="false"
+      autoComplete="off"
+      className={`w-full max-w-2xl p-5 rounded-2xl bg-white/5 border border-white/10 text-white text-xl focus:border-blue-500 outline-none transition-all text-center ${mode === 'myanmar' ? 'font-myanmar' : ''}`}
+      placeholder={mode === "english" ? "Type the text above..." : "အပေါ်ကစာသားအတိုင်း ရိုက်ပေးပါ..."}
       value={input}
       onChange={handleChange}
     />

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { typingLessons } from "../../data/typingData"; 
+import { typingLessons } from "../../data/typingData";
 
 export default function TypingDisplay({ mode, lessonIndex }) {
   const lessonText = typingLessons[mode][lessonIndex];
