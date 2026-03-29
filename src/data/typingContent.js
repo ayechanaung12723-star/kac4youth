@@ -1,12 +1,16 @@
 export const typingLessons = {
   english: [
-    "The quick brown fox jumps over the lazy dog.",
-    "Practice makes perfect in every skill you learn.",
-    "Coding is the language of the future for youth."
+    "Success comes to those who work hard.",
+    "Focus on your goals and never give up.",
+    "Discipline is the bridge between goals and achievement.",
+    "Practice makes perfect.",
+    "Knowledge is power."
   ],
   myanmar: [
-    "နေကောင်းပါသလား။ ကွန်ပျူတာ နည်းပညာကို အခြေခံကစပြီး လေ့လာကြပါစို့။",
-    "မြန်မာစာ စာစီစာရိုက် စနစ်တကျ လေ့ကျင့်ခြင်းသည် အလုပ်အကိုင် အခွင့်အလမ်းကို တိုးတက်စေပါသည်။",
-    "လူငယ်တိုင်း ကွန်ပျူတာ တတ်မြောက်ထားခြင်းဖြင့် မိမိဘဝကို မြှင့်တင်နိုင်ပါသည်။"
+    "အောင်မြင်မှုသည် ကြိုးစားသူတို့အတွက် ရှိသည်။",
+    "အာရုံစိုက်ပြီး မထွက်ခွာဘဲ လေ့ကျင့်ပါ။",
+    "ကြိုးစားမှုသည် အောင်မြင်မှုနှင့် ချိတ်ဆက်ထားသော တံတားဖြစ်သည်။",
+    "လေ့ကျင့်မှုက ပြည့်စုံမှုကို ဖန်တီးသည်။",
+    "အသိပညာသည် အင်အားဖြစ်သည်။"
   ]
 };
