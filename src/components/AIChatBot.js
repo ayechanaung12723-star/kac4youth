@@ -1,34 +1,44 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 
-const courseData = {
-  "သင်တန်းများ": "KAC For Youth မှာ Computer သင်တန်း, AI သင်တန်း, Crypto သင်တန်း, Telegram Automation နဲ့ Freelancing သင်တန်းတွေ ရှိပါတယ်ခင်ဗျာ။",
-  "သင်တန်းကြေး": "သင်တန်းအလိုက် သင်တန်းကြေးတွေ ကွာခြားမှုရှိပါတယ်။ အသေးစိတ်ကိုတော့ Messenger မှာ ထပ်မံစုံစမ်းနိုင်ပါတယ်ခင်ဗျာ။",
-  "တက်ရောက်ရန်": "သင်တန်းတွေကို Online ကနေ တိုက်ရိုက်တက်ရောက်နိုင်အောင် စီစဉ်ပေးထားပါတယ်ခင်ဗျာ။",
-  "ဆက်သွယ်ရန်": "ဖုန်း - 09-668014456 သို့မဟုတ် Telegram @KAC_4_Youth ကို ဆက်သွယ်နိုင်ပါတယ်ခင်ဗျာ။"
+const courseCategories = {
+  "Computer သင်တန်း": `အပိုင်း - ၁: ကွန်ပျူတာစနစ်ကို နားလည်ခြင်း\nအပိုင်း - ၂: Windows နှင့် File Management\nအပိုင်း - ၃: Keyboard Shortcuts\nအပိုင်း - ၄: Internet & Web Browsing\nအပိုင်း - ၅: Microsoft Word\nအပိုင်း - ၆: Microsoft Excel\nအပိုင်း - ၇: Microsoft PowerPoint\nအပိုင်း - ၈: Graphic Design Basics\nအပိုင်း - ၉: Cyber Security & Online Safety\nအပိုင်း - ၁၀: Troubleshooting & Maintenance`,
+  
+  "Telegram ဝင်ငွေရှာနည်းသင်တန်း": `Telegram Bot ဖန်တီးနည်း၊ Channel Management နှင့် Automation စနစ်များ အသုံးပြုပြီး ဝင်ငွေရှာဖွေနည်း သင်ခန်းစာများ ပါဝင်ပါသည်။`,
+  
+  "AI သင်တန်း": `အပိုင်း (၁): AI ဆိုတာဘာလဲ?\nအပိုင်း (၂): ChatGPT/Gemini (Prompt Engineering)\nအပိုင်း (၃): AI Content Writing\nအပိုင်း (၄): AI Image Generation\nအပိုင်း (၅): AI Video Creation\nအပိုင်း (၆): AI Voice & Music\nအပိုင်း (၇): ရုံးလုပ်ငန်းသုံး AI\nအပိုင်း (၈): AI Website & App Construction\nအပိုင်း (၉): AI Ethics\nအပိုင်း (၁၀): AI ဖြင့် ငွေရှာနည်းများ`,
+  
+  "Crypto ဖြင့် ငွေရှာနည်းသင်တန်း": `Binance အသုံးပြုနည်း၊ Futures/Spot Trading နှင့် Crypto နည်းပညာဖြင့် စနစ်တကျ ရင်းနှီးမြှုပ်နှံနည်းများ ပါဝင်ပါသည်။`,
+  
+  "Freelancing အလုပ်ဖြင့် ငွေရှာနည်းသင်တန်း": `Upwork, Fiverr နှင့် အခြား Freelance platform များတွင် အလုပ်ရှာဖွေနည်းနှင့် နိုင်ငံတကာမှ ဒေါ်လာဝင်ငွေ ရှာဖွေနည်းများ ပါဝင်ပါသည်။`
 };
 
 export default function AIChatBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "bot", text: "မင်္ဂလာပါ။ KAC For Youth က ကြိုဆိုပါတယ်။ ဘာများ ကူညီပေးရမလဲခင်ဗျာ?" }
+    { role: "bot", text: "မင်္ဂလာပါ။ KAC For Youth မှ ကြိုဆိုပါတယ်။ ဘာများ ကူညီပေးရမလဲခင်ဗျာ?" }
   ]);
+  const [showCourses, setShowCourses] = useState(false);
   const chatEndRef = useRef(null);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleOptionClick = (key) => {
-    const userMsg = { role: "user", text: key };
-    const botMsg = { role: "bot", text: courseData[key] };
-    
-    setMessages((prev) => [...prev, userMsg]);
-    
-    // AI အဖြေပေးသလို ခဏစောင့်ပြီးမှ ပြပေးရန်
-    setTimeout(() => {
-      setMessages((prev) => [...prev, botMsg]);
-    }, 500);
+  const startCourseInquiry = () => {
+    setMessages((prev) => [...prev, 
+      { role: "user", text: "သင်တန်းများအကြောင်း သိလိုပါသည်" },
+      { role: "bot", text: "KAC For Youth မှာ တက်ရောက်နိုင်တဲ့ သင်တန်းများမှာ အောက်ပါအတိုင်း ဖြစ်ပါသည်။ သင်စိတ်ဝင်စားတဲ့ သင်တန်းအကြောင်းကို နှိပ်ပြီး အသေးစိတ် ကြည့်နိုင်ပါတယ်။" }
+    ]);
+    setShowCourses(true);
+  };
+
+  const handleCourseClick = (courseName) => {
+    setMessages((prev) => [...prev, 
+      { role: "user", text: courseName },
+      { role: "bot", text: courseCategories[courseName] },
+      { role: "bot", text: "အခြားသင်တန်းများအကြောင်း အသေးစိတ် ထပ်ကြည့်မလား?" }
+    ]);
   };
 
   return (
@@ -41,15 +51,15 @@ export default function AIChatBot() {
       </button>
 
       {isOpen && (
-        <div className="absolute bottom-16 right-0 w-[350px] md:w-[400px] bg-[#0f172a] border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[500px]">
-          <div className="bg-gradient-to-r from-cyan-600 to-blue-600 p-4 font-bold text-white flex justify-between items-center">
-            <span>KAC Assistant (Auto-Reply)</span>
+        <div className="absolute bottom-16 right-0 w-[350px] md:w-[400px] bg-[#0f172a] border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[550px]">
+          <div className="bg-gradient-to-r from-cyan-600 to-blue-600 p-4 font-bold text-white">
+            KAC Assistant
           </div>
           
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-900/50">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[85%] p-3 rounded-2xl text-sm ${
+                <div className={`max-w-[90%] p-3 rounded-2xl text-sm whitespace-pre-wrap ${
                   m.role === "user" ? "bg-cyan-600 text-white" : "bg-slate-800 text-slate-200"
                 }`}>
                   {m.text}
@@ -59,17 +69,27 @@ export default function AIChatBot() {
             <div ref={chatEndRef} />
           </div>
 
-          {/* မေးခွန်း ခလုတ်လေးများ */}
-          <div className="p-4 border-t border-white/10 bg-[#0f172a] flex flex-wrap gap-2">
-            {Object.keys(courseData).map((key) => (
+          <div className="p-4 border-t border-white/10 bg-[#0f172a] flex flex-col gap-2">
+            {!showCourses ? (
               <button
-                key={key}
-                onClick={() => handleOptionClick(key)}
-                className="bg-white/10 hover:bg-cyan-500 text-white text-xs px-3 py-2 rounded-lg transition-colors border border-white/10"
+                onClick={startCourseInquiry}
+                className="bg-cyan-500 hover:bg-cyan-600 text-white py-2 rounded-xl transition-colors font-bold"
               >
-                {key}
+                သင်တန်းများအကြောင်း စုံစမ်းရန်
               </button>
-            ))}
+            ) : (
+              <div className="grid grid-cols-1 gap-2">
+                {Object.keys(courseCategories).map((name) => (
+                  <button
+                    key={name}
+                    onClick={() => handleCourseClick(name)}
+                    className="bg-slate-800 hover:bg-cyan-500 text-white text-xs p-2 rounded-lg transition-all text-left border border-white/5"
+                  >
+                    • {name}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
