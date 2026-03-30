@@ -8,7 +8,7 @@ const courseCategories = {
   
   "AI သင်တန်း": `အပိုင်း (၁): AI ဆိုတာဘာလဲ?\nအပိုင်း (၂): ChatGPT/Gemini (Prompt Engineering)\nအပိုင်း (၃): AI Content Writing\nအပိုင်း (၄): AI Image Generation\nအပိုင်း (၅): AI Video Creation\nအပိုင်း (၆): AI Voice & Music\nအပိုင်း (၁၀): AI ဖြင့် ငွေရှာနည်းများ`,
   
-  "Crypto ဖြင့် ငွေရှာနည်းသင်တန်း": `Binance အသုံးပြုနည်း၊ Futures/Spot Trading နှင့် Crypto နည်းပညာဖြင့် စနစ်တကျ ရင်းနှီးမြှုပ်နှံနည်းများ ပါဝင်ပါသည်။`,
+  "Crypto ဖြင့် ငွေရှာနည်းသင်တန်း": `အပိုင်း - ၁: Cryptocurrency အခြေခံနှင့် Blockchain နည်းပညာ\nအပိုင်း - ၂: Crypto Wallet (ပိုက်ဆံအိတ်) များအကြောင်း\nအပိုင်း - ၃: Binance နှင့် အဓိက Exchange များ အသုံးပြုနည်း\nအပိုင်း - ၄: Market Analysis (ဈေးကွက်ကို လေ့လာခြင်း)\nအပိုင်း - ၅: Spot Trading နှင့် Long-term Investment\nအပိုင်း - ၆: Futures Trading နှင့် Leverage\nအပိုင်း - ၇: Trading Bots နှင့် Automation\nအပိုင်း - ၁၀: Crypto ဖြင့် ရေရှည်ဝင်ငွေရှာခြင်း`,
   
   "Freelancing အလုပ်ဖြင့် ငွေရှာနည်းသင်တန်း": `Upwork, Fiverr နှင့် အခြား Freelance platform များတွင် အလုပ်ရှာဖွေနည်းနှင့် နိုင်ငံတကာမှ ဒေါ်လာဝင်ငွေ ရှာဖွေနည်းများ ပါဝင်ပါသည်။`
 };
