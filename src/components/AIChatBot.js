@@ -2,18 +2,18 @@
 import { useState, useRef, useEffect } from "react";
 
 const courseCategories = {
-  "Computer သင်တန်း": `အပိုင်း - ၁: ကွန်ပျူတာစနစ်ကို နားလည်ခြင်း\nအပိုင်း - ၂: Windows နှင့် File Management\nအပိုင်း - ၃: Keyboard Shortcuts\nအပိုင်း - ၄: Internet & Web Browsing\nအပိုင်း - ၅: Microsoft Word\nအပိုင်း - ၆: Microsoft Excel\nအပိုင်း - ၇: Microsoft PowerPoint\nအပိုင်း - ၁၀: Troubleshooting & Maintenance`,
+  "Computer သင်တန်း": `အပိုင်း - ၁: ကွန်ပျူတာစနစ်ကို နားလည်ခြင်း\nအပိုင်း - ၂: Windows နှင့် File Management\nအပိုင်း - ၃: Keyboard Shortcuts\nအပိုင်း - ၄: Internet & Web Browsing\nအပိုင်း - ၅: Microsoft Word\nအပိုင်း - ၆: Microsoft Excel\nအပိုင်း - ၇: Microsoft PowerPoint\nအပိုင်း - ၈: Adobe Photoshop အခြေခံ\nအပိုင်း - ၉: Cyber Security & Online Safety\nအပိုင်း - ၁၀: Troubleshooting & Maintenance`,
   
   "Telegram ဝင်ငွေရှာနည်းသင်တန်း": `Telegram Bot ဖန်တီးနည်း၊ Channel Management နှင့် Automation စနစ်များ အသုံးပြုပြီး ဝင်ငွေရှာဖွေနည်း သင်ခန်းစာများ ပါဝင်ပါသည်။`,
   
-  "AI သင်တန်း": `အပိုင်း (၁): AI ဆိုတာဘာလဲ?\nအပိုင်း (၂): ChatGPT/Gemini (Prompt Engineering)\nအပိုင်း (၃): AI Content Writing\nအပိုင်း (၄): AI Image Generation\nအပိုင်း (၅): AI Video Creation\nအပိုင်း (၆): AI Voice & Music\nအပိုင်း (၁၀): AI ဖြင့် ငွေရှာနည်းများ`,
+  "AI သင်တန်း": `အပိုင်း - ၁: AI ဆိုတာဘာလဲ?\nအပိုင်း - ၂: Prompt Engineering\nအပိုင်း - ၃: AI Content Writing\nအပိုင်း - ၄: AI Image Generation\nအပိုင်း - ၅: AI Video Creation\nအပိုင်း - ၆: AI Voice & Music\nအပိုင်း - ၇: လုပ်ငန်းတွင် AI အသုံးချနည်း\nအပိုင်း - ၈: AI ဖြင့် Web & App လုပ်နည်း\nအပိုင်း - ၉: AI ရဲ့ ကျင့်ဝတ်\nအပိုင်း - ၁၀: AI ဖြင့် ငွေရှာနည်းများ`,
   
-  "Crypto ဖြင့် ငွေရှာနည်းသင်တန်း": `အပိုင်း - ၁: Cryptocurrency အခြေခံနှင့် Blockchain နည်းပညာ\nအပိုင်း - ၂: Crypto Wallet (ပိုက်ဆံအိတ်) များအကြောင်း\nအပိုင်း - ၃: Binance နှင့် အဓိက Exchange များ အသုံးပြုနည်း\nအပိုင်း - ၄: Market Analysis (ဈေးကွက်ကို လေ့လာခြင်း)\nအပိုင်း - ၅: Spot Trading နှင့် Long-term Investment\nအပိုင်း - ၆: Futures Trading နှင့် Leverage\nအပိုင်း - ၇: Trading Bots နှင့် Automation\nအပိုင်း - ၁၀: Crypto ဖြင့် ရေရှည်ဝင်ငွေရှာခြင်း`,
+  "Crypto ဖြင့် ငွေရှာနည်းသင်တန်း": `အပိုင်း - ၁: Cryptocurrency အခြေခံ\nအပိုင်း - ၂: Crypto Wallet များအကြောင်း\nအပိုင်း - ၃: Binance နှင့် Exchange များအသုံးပြုနည်း\nအပိုင်း - ၄: Market Analysis\nအပိုင်း - ၅: Spot Trading နှင့် Investment\nအပိုင်း - ၆: Futures Trading နှင့် Leverage\nအပိုင်း - ၇: Trading Bots နှင့် Automation\nအပိုင်း - ၈: DeFi နှင့် Token များ\nအပိုင်း - ၉: Risk Management\nအပိုင်း - ၁၀: Crypto ဖြင့် ရေရှည်ဝင်ငွေရှာခြင်း`,
   
-  "Freelancing အလုပ်ဖြင့် ငွေရှာနည်းသင်တန်း": `Upwork, Fiverr နှင့် အခြား Freelance platform များတွင် အလုပ်ရှာဖွေနည်းနှင့် နိုင်ငံတကာမှ ဒေါ်လာဝင်ငွေ ရှာဖွေနည်းများ ပါဝင်ပါသည်။`
+  "Freelancing အလုပ်ဖြင့် ငွေရှာနည်းသင်တန်း": `အပိုင်း - ၁: Freelancing အခြေခံ\nအပိုင်း - ၂: မိမိ Skill ကို ဝန်ဆောင်မှုအဖြစ်ပြောင်းလဲခြင်း\nအပိုင်း - ၃: Facebook Marketing\nအပိုင်း - ၄: LinkedIn - Branding & Networking\nအပိုင်း - ၅: TikTok & YouTube (Video Marketing နဲ့အလုပ်ရှာခြင်း)\nအပိုင်း - ၆: Portfolio ပြုစုနည်း\nအပိုင်း - ၇: Client နဲ့ ဆက်သွယ်ပြောဆိုခြင်း\nအပိုင်း - ၈: Project စီမံခန့်ခွဲခြင်း\nအပိုင်း - ၉: ငွေပေးချေမှုနှင့် ဝင်ငွေထုတ်ယူခြင်း\nအပိုင်း - ၁၀: ရေရှည်ရပ်တည်နိုင်ရန် လျှို့ဝှက်ချက်များ`,
 };
 
-const pricingInfo = `💰 **သင်တန်းကြေး Package များ**\n\n📦 **Package A:** သင်တန်း ၅ မျိုးမှ (၁) မျိုး - ၁ သိန်းကျပ်\n📦 **Package B:** သင်တန်း ၅ မျိုးမှ (၃) မျိုး - ၂ သိန်းကျပ်\n📦 **Package C:** သင်တန်း ၅ မျိုးလုံး - ၃ သိန်းကျပ်\n\n📩 အောက်ပါခလုတ်ကိုနှိပ်ပြီး Telegram တွင် တိုက်ရိုက်အပ်နှံနိုင်ပါသည်။`;
+const pricingInfo = `💰 **သင်တန်းကြေး Package များ**\n\n📦 **Package A:**\n သင်တန်း ၅ မျိုးမှ (၁) မျိုး - ၁ သိန်းကျပ်\n📦 **Package B:**\n သင်တန်း ၅ မျိုးမှ (၃) မျိုး - ၂ သိန်းကျပ်\n📦 **Package C:**\n သင်တန်း ၅ မျိုးလုံး - ၃ သိန်းကျပ်\n\n📩 အောက်ပါခလုတ်ကိုနှိပ်ပြီး Telegram တွင် တိုက်ရိုက်အပ်နှံနိုင်ပါသည်။`;
 
 export default function AIChatBot() {
   const [isOpen, setIsOpen] = useState(false);
