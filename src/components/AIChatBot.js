@@ -111,7 +111,7 @@ export default function AIChatBot() {
             {view === "pricing" && (
               <div className="flex flex-col gap-2">
                 <a 
-                  href="https://t.me/KAC_4_Youth" 
+                  href="https://t.me/KAC4YouthBot" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="bg-blue-500 hover:bg-blue-600 text-white py-2.5 rounded-xl text-sm font-bold text-center transition-all shadow-lg animate-pulse"
