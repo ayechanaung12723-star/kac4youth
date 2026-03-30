@@ -1,5 +1,17 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
+import AIChatBot from "@/components/AIChatBot";
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+        <AIChatBot /> {/* ဒီမှာ ထည့်လိုက်ပါ */}
+      </body>
+    </html>
+  );
+}
 
 export const metadata: Metadata = {
   title: "KAC For Youth",
