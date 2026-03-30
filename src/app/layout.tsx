@@ -1,17 +1,6 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
-import AIChatBot from "@/components/AIChatBot";
-
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body>
-        {children}
-        <AIChatBot /> {/* ဒီမှာ ထည့်လိုက်ပါ */}
-      </body>
-    </html>
-  );
-}
+import AIChatBot from "@/components/AIChatBot"; // AI ChatBot ကို import လုပ်ပါ
 
 export const metadata: Metadata = {
   title: "KAC For Youth",
@@ -26,11 +15,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-[#020617] text-white antialiased selection:bg-cyan-400/30 selection:text-white overflow-x-hidden">
+        {/* လက်ရှိ Page content များ */}
         {children}
+        
+        {/* Website တစ်ခုလုံးမှာ ပေါ်နေမယ့် AI Chatbot */}
+        <AIChatBot />
       </body>
     </html>
   );
