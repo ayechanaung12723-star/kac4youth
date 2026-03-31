@@ -72,9 +72,16 @@ export const courses = [
     icon: "/icons/telegram.webp",
     description: "Channel & Content Creation နည်းလမ်းများ",
     topics: [
-      "Part 1: Account Registration, Identity Setup, Profile Photo, Bio, Finding Friends",
-      "Part 2: Privacy & Security (Phone Privacy, 2-Step Verification, Passcode Lock, Group Control, Active Sessions)",
-      "Part 3: Data & Storage (Storage Usage, Media Auto-Download, Data Usage, Network Settings, Automatic Deletion)"
+      "အပိုင်း (၁): အကောင့်သစ်ဖွင့်ခြင်း နှင့် စာပို့ခြင်း",
+      "အပိုင်း (၂): Account လုံခုံစေရန် Settings များအကြောင်း",
+      "အပိုင်း (၃): Telegram Storage ကို ရှင်းလင်းနည်း",
+      "အပိုင်း (၄): Telegram Business အတွက် settings များ",
+      "အပိုင်း (၅): Telegram bot များ အကြောင်း",
+      "အပိုင်း (၆): Telegram သုံးသူများ ဆောင်ရန် ရှောင်ရန်",
+      "အပိုင်း (၇): Telegram Stars, Profile gift များအကြောင်း",
+      "အပိုင်း (၈): Telegram translation အကြောင်း",
+      "အပိုင်း (၉): Telegram တွင် AI အသုံးပြုပုံ",
+      "အပိုင်း (၁၀): Theme ပြုလုပ်ပုံ"
     ]
   }
 ];
