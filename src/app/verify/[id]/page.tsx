@@ -1,16 +1,14 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useState } from "react";
 import Link from "next/link";
 
 export default function VerifyPage() {
   const params = useParams();
-  const id = params?.id as string;
+  const rawId = params?.id as string;
+  const id = rawId?.replace(".pdf", "");
 
   const pdfUrl = `/certificates/${id}.pdf`;
-
-  const [downloaded, setDownloaded] = useState(false);
 
   const handleShare = async () => {
     try {
@@ -21,53 +19,44 @@ export default function VerifyPage() {
           url: window.location.href,
         });
       } else {
-        alert("Copy link: " + window.location.href);
+        window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`,
+          "_blank"
+        );
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  const handleDownload = () => {
-    setDownloaded(true);
-  };
-
   return (
     <div style={styles.container}>
-      {/* HEADER */}
+      {/* TITLE */}
       <h2 style={styles.title}>🎓 Verified Certificate</h2>
 
       {/* PDF VIEW */}
-      <div style={styles.pdfBox}>
-        <iframe
-          src={pdfUrl}
-          style={styles.iframe}
-        />
+      <div style={styles.viewer}>
+        <iframe src={pdfUrl} style={styles.iframe} />
       </div>
 
-      {/* BUTTONS */}
-      <div style={styles.buttonWrapper}>
-        <a href={pdfUrl} download onClick={handleDownload}>
+      {/* ACTION BAR (FIXED BOTTOM) */}
+      <div style={styles.actionBar}>
+        <a href={pdfUrl} download style={{ flex: 1 }}>
           <button style={{ ...styles.button, background: "#1e90ff" }}>
-            📥 Download Certificate
+            📥 Download
           </button>
         </a>
 
-        {downloaded && (
-          <button
-            onClick={handleShare}
-            style={{ ...styles.button, background: "#22c55e" }}
-          >
-            📢 Share
-          </button>
-        )}
-      </div>
+        <button
+          onClick={handleShare}
+          style={{ ...styles.button, background: "#22c55e", flex: 1 }}
+        >
+          📢 Share
+        </button>
 
-      {/* HOME BUTTON */}
-      <div style={{ marginTop: "20px" }}>
-        <Link href="/">
+        <Link href="/" style={{ flex: 1 }}>
           <button style={{ ...styles.button, background: "#111" }}>
-            🏠 Back to Home
+            🏠 Home
           </button>
         </Link>
       </div>
@@ -77,23 +66,24 @@ export default function VerifyPage() {
 
 const styles = {
   container: {
-    textAlign: "center" as const,
-    padding: "16px",
+    padding: "10px",
+    paddingBottom: "80px", // space for bottom bar
     maxWidth: "900px",
     margin: "0 auto",
+    textAlign: "center" as const,
   },
 
   title: {
-    marginBottom: "15px",
-    fontSize: "22px",
+    fontSize: "18px",
+    marginBottom: "10px",
   },
 
-  pdfBox: {
+  viewer: {
     width: "100%",
-    height: "70vh",
-    border: "1px solid #ddd",
+    height: "75vh",
     borderRadius: "10px",
     overflow: "hidden" as const,
+    border: "1px solid #ddd",
   },
 
   iframe: {
@@ -102,20 +92,27 @@ const styles = {
     border: "none",
   },
 
-  buttonWrapper: {
-    marginTop: "15px",
+  actionBar: {
+    position: "fixed" as const,
+    bottom: 0,
+    left: 0,
+    right: 0,
     display: "flex",
-    flexDirection: "column" as const,
-    gap: "10px",
+    gap: "6px",
+    padding: "10px",
+    background: "#fff",
+    borderTop: "1px solid #ddd",
+    zIndex: 1000,
   },
 
   button: {
+    width: "100%",
     padding: "12px",
     borderRadius: "8px",
     border: "none",
     color: "#fff",
     fontWeight: 600,
+    fontSize: "14px",
     cursor: "pointer",
-    width: "100%",
   },
 };
