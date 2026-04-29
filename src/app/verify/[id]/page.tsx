@@ -1,19 +1,16 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Link from "next/link";
 
 export default function VerifyPage() {
   const params = useParams();
   const id = params?.id as string;
 
-  const [loading, setLoading] = useState(true);
+  const pdfUrl = `/certificates/${id}.pdf`;
 
-  const pdfUrl = id ? `/certificates/${id}.pdf` : "";
-
-  useEffect(() => {
-    setLoading(false);
-  }, [id]);
+  const [downloaded, setDownloaded] = useState(false);
 
   const handleShare = async () => {
     try {
@@ -24,82 +21,101 @@ export default function VerifyPage() {
           url: window.location.href,
         });
       } else {
-        alert("Copy this link and share: " + window.location.href);
+        alert("Copy link: " + window.location.href);
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  if (loading) {
-    return (
-      <div style={{ textAlign: "center", padding: "40px" }}>
-        <p>Loading certificate...</p>
-      </div>
-    );
-  }
-
-  if (!id) {
-    return (
-      <div style={{ textAlign: "center", padding: "40px" }}>
-        <h2>❌ Invalid Certificate Link</h2>
-      </div>
-    );
-  }
+  const handleDownload = () => {
+    setDownloaded(true);
+  };
 
   return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
-      <h2 style={{ marginBottom: "20px" }}>🎓 Verified Certificate</h2>
+    <div style={styles.container}>
+      {/* HEADER */}
+      <h2 style={styles.title}>🎓 Verified Certificate</h2>
 
-      {/* PDF CHECK LINK (DEBUG SAFE) */}
-      <p style={{ fontSize: "12px", color: "gray" }}>
-        {pdfUrl}
-      </p>
+      {/* PDF VIEW */}
+      <div style={styles.pdfBox}>
+        <iframe
+          src={pdfUrl}
+          style={styles.iframe}
+        />
+      </div>
 
-      {/* PDF PREVIEW */}
-      <iframe
-        src={pdfUrl}
-        width="100%"
-        height="650px"
-        style={{
-          border: "1px solid #ddd",
-          borderRadius: "10px",
-        }}
-      />
+      {/* BUTTONS */}
+      <div style={styles.buttonWrapper}>
+        <a href={pdfUrl} download onClick={handleDownload}>
+          <button style={{ ...styles.button, background: "#1e90ff" }}>
+            📥 Download Certificate
+          </button>
+        </a>
 
-      <br /><br />
+        {downloaded && (
+          <button
+            onClick={handleShare}
+            style={{ ...styles.button, background: "#22c55e" }}
+          >
+            📢 Share
+          </button>
+        )}
+      </div>
 
-      {/* DOWNLOAD */}
-      <a href={pdfUrl} download>
-        <button
-          style={{
-            padding: "10px 20px",
-            marginRight: "10px",
-            background: "#1e90ff",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer",
-          }}
-        >
-          📥 Download Certificate
-        </button>
-      </a>
-
-      {/* SHARE */}
-      <button
-        onClick={handleShare}
-        style={{
-          padding: "10px 20px",
-          background: "#22c55e",
-          color: "white",
-          border: "none",
-          borderRadius: "8px",
-          cursor: "pointer",
-        }}
-      >
-        📢 Share
-      </button>
+      {/* HOME BUTTON */}
+      <div style={{ marginTop: "20px" }}>
+        <Link href="/">
+          <button style={{ ...styles.button, background: "#111" }}>
+            🏠 Back to Home
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }
+
+const styles = {
+  container: {
+    textAlign: "center" as const,
+    padding: "16px",
+    maxWidth: "900px",
+    margin: "0 auto",
+  },
+
+  title: {
+    marginBottom: "15px",
+    fontSize: "22px",
+  },
+
+  pdfBox: {
+    width: "100%",
+    height: "70vh",
+    border: "1px solid #ddd",
+    borderRadius: "10px",
+    overflow: "hidden" as const,
+  },
+
+  iframe: {
+    width: "100%",
+    height: "100%",
+    border: "none",
+  },
+
+  buttonWrapper: {
+    marginTop: "15px",
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "10px",
+  },
+
+  button: {
+    padding: "12px",
+    borderRadius: "8px",
+    border: "none",
+    color: "#fff",
+    fontWeight: 600,
+    cursor: "pointer",
+    width: "100%",
+  },
+};
